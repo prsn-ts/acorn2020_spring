@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gura.spring04.member.dao.MemberDao;
+import com.gura.spring04.member.dao.MemberDaoImpl;
 import com.gura.spring04.member.dto.MemberDto;
 
 @Controller
@@ -17,6 +19,23 @@ public class MemberController {
 	@Autowired  
 	private MemberDao dao;
 	
+	//회원 추가 폼 요청 처리
+	@RequestMapping("/member/insertform")
+	public String insertform() {
+		//수행할 비즈니스 로직은 현재 없다.
+		
+		return "member/insertform";
+	}
+	
+	//회원 추가 요청 처리
+	@RequestMapping("/member/insert")
+	public String insert(MemberDto dto) {
+		//회원 정보를 DB에 저장하고
+		dao.insert(dto);
+		//view page로 forward 이동해서 응답.
+		return "member/insert";
+	}
+
 	@RequestMapping("/member/list")
 	public ModelAndView list(ModelAndView mView) {
 		//회원 목록을 얻어온다.
