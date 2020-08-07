@@ -50,7 +50,7 @@ public class MemberDaoImpl implements MemberDao {
 		 *  sql id -> delete
 		 *  parameterType -> int or java.lang.Integer (parameterType을 int로 써도 자동으로 java.lang.Integer 이런식으로 변경이된다)
 		 */
-		session.delete("member.update", num);
+		session.delete("member.delete", num);
 	}
 
 	@Override
