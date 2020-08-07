@@ -46,6 +46,15 @@ public class MemberController {
 	}
 	
 	//회원 추가 요청 처리
+	@RequestMapping("/member/insertform")
+	public String insertform() {
+		//수행할 비즈니스 로직이 없다.
+		
+		//view page로 forward 이동해서 응답.
+		return "member/insertform";
+	}
+	
+	//회원 추가 요청 처리
 	@RequestMapping("/member/insert")
 	public String insert(@ModelAttribute MemberDto dto) {
 		//회원 정보를 DB에 저장하고
