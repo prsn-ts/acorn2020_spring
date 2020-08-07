@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +21,34 @@ public class MemberController {
 	@Autowired  
 	private MemberDao dao;
 	
+	//POST 방식 /member/update 요청 처리 -> get 요청 처리를 완전히 무시한다.(404에러뜸)
+	@RequestMapping(value = "/member/update", method = RequestMethod.POST)
+	public String update(@ModelAttribute MemberDto dto) {
+		dao.update(dto);
+		return "member/update";
+	}
+	
+	//GET 방식 /member/updateform 요청 처리 -> post 요청 처리를 완전히 무시한다.(404에러뜸)
+	@RequestMapping(value = "/member/updateform", method = RequestMethod.GET)
+	public ModelAndView updateform(@RequestParam int num, ModelAndView mView) {
+		//dao 를 이용해서 수정할 회원의 정보를 얻어온다.
+		MemberDto dto = dao.getData(num);
+		//model 을 ModelAndView 객체에 담는다.
+		mView.addObject("dto", dto);
+		//view 페이지 정보를 ModelAndView 객체에 담는다.
+		mView.setViewName("member/updateform");
+		//ModelAndView 객체를 리턴해준다.
+		return mView;
+	}
+	
+	//회원 삭제 요청 처리
+	@RequestMapping("/member/delete")
+	public String delete(@RequestParam int num) {
+		dao.delete(num);
+		//리다일렉트 응답
+		return "redirect:/member/list.do";
+	}
+	
 	//회원 추가 폼 요청 처리
 	@RequestMapping("/member/insertform")
 	public String insertform() {
@@ -29,7 +59,7 @@ public class MemberController {
 	
 	//회원 추가 요청 처리
 	@RequestMapping("/member/insert")
-	public String insert(MemberDto dto) {
+	public String insert(@ModelAttribute MemberDto dto) {
 		//회원 정보를 DB에 저장하고
 		dao.insert(dto);
 		//view page로 forward 이동해서 응답.
