@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Car 객체를 bean 으로 만들려고 한다면?(Car의 생성자는 Engine type을 인자값으로 넣어주어야해서 Engine type을 넣는 것도 포함해야된다) -->
+	
+	<!-- e1 = new Engine(); -->
+	<bean id="e1" class="test.auto.Engine"/> <!-- Car 생성자의 인자값으로 Engine type 객체의 참조값을 넣기위해 Spring으로 id가 engine인 Engine 객체 생성 -->
+	
+	<!-- car1 = new Car(e1); -->
+	<bean id="car1" class="test.auto.Car">
+		<constructor-arg name="engine" ref="e1"/> <!-- name은 Car 생성자의 매개변수인 engine으로 매칭되고 객체의 참조값(ref)은 e1에 담는다. -->
+	</bean>
+</beans>
