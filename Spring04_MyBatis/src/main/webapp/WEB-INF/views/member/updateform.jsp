@@ -10,8 +10,9 @@
 <body>
 <div class="container">
 	<h1>회원 정보 수정 폼 입니다</h1>
-	<input type="hidden" name="num" value="${dto.num }"/>
+	
 	<form action="update.do" method="post">
+		<input type="hidden" name="num" value="${dto.num }"/>
 		<div class="form-group">
 			<label for="num">번호</label>
 			<input type="text" id="num" class="form-control" value="${dto.num }" disabled/>
