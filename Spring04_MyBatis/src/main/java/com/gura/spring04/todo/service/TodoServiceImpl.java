@@ -31,11 +31,10 @@ public class TodoServiceImpl implements TodoService {
 		//업데이트 로직 수행
 		dao.update(dto);
 	}
-
+	//할일 정보를 삭제하는 비즈니스 로직 처리
 	@Override
 	public void deleteTodo(int num) {
-		// TODO Auto-generated method stub
-		
+		dao.delete(num);
 	}
 
 	@Override

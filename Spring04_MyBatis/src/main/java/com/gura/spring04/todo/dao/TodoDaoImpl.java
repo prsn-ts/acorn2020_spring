@@ -37,8 +37,12 @@ public class TodoDaoImpl implements TodoDao {
 
 	@Override
 	public void delete(int num) {
-		// TODO Auto-generated method stub
-		
+		/*
+		 *  mapper namespace -> todo
+		 *  sql id -> delete
+		 *  parameterType -> int or java.lang.Integer (parameterType을 int로 써도 자동으로 java.lang.Integer 이런식으로 변경이된다)
+		 */
+		session.delete("todo.delete", num);
 	}
 
 	@Override

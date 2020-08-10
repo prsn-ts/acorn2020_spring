@@ -18,6 +18,14 @@ public class TodoController {
 	@Autowired
 	private TodoService service;
 	
+	//할일 삭제 요청 처리
+	@RequestMapping("/todo/delete")
+	public String delete(@RequestParam int num) {
+		service.deleteTodo(num);
+		//리다일렉트 응답
+		return "redirect:/todo/list.do";
+	}
+	
 	//POST 방식 /todo/update 요청 처리 -> get 요청 처리를 완전히 무시한다.(404에러뜸)
 	@RequestMapping(value = "/todo/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute TodoDto dto) {

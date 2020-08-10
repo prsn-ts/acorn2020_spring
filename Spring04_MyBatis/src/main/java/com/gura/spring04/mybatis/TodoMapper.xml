@@ -9,10 +9,16 @@
 	
 	<!-- #{} 부분은 MyBatis에서 사용하는 문법(?)이고 TodoDto에 있는 필드값의 바인딩 처리를 담당. 단, #{} 중괄호안에 들어가는 값은 TodoDto 필드의 이름이 들어가야한다. -->
 	<update id="update" parameterType="com.gura.spring04.todo.dto.TodoDto">
-		UPDATE Todo
+		UPDATE todo
 		SET work=#{work}
 		WHERE num=#{num}
 	</update>
+	
+	<!-- 파라미터 값이 하나밖에 없다면 #{}의 중괄호 안에는 이름을 마음대로 정할 수 있다.(마음대로 이름을 지어도 바인딩 처리가 가능하다) -->
+	<delete id="delete" parameterType="int"> 
+		DELETE FROM todo
+		WHERE num = #{num} 
+	</delete>
 	
 	<select id="getData" parameterType="int" resultType="com.gura.spring04.todo.dto.TodoDto"> 
 		SELECT num,work,regdate
