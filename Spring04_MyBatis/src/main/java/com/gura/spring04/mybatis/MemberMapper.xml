@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member"> <!-- 여러 mapper 들을 식별할 수 있는 namespace의 속성값. -->
-	<!-- 
+	<!-- Mapper에 대한 간략한 설명.
+	
 		sql문을 xml로 작성해놓고 필요할 때 불러다가 쓰도록 정리
 		select 된 결과를 가져오기도 쉽고 바인딩하는 과정도 간편하다.(익숙해지기만 하면..)
 	 -->
-	 <!-- 
+	 <!-- id, parameterType의 대한 설명.
+	 
 	 	하나의 mapper 안에서 여러개의 insert가 있을 수 있어서 특정한 insert를 선택하기위해 id값으로 구별한다.
 	 	또한, parameterType 속성의 값으로 이 insert문 수행에 있어 연관된 Dto를 알려주기위해서  "com.gura.spring04.member.dto.MemberDto" 이런식으로 지정함.
 	  -->
-	<insert id="insert" parameterType="com.gura.spring04.member.dto.MemberDto"> 
+	<!-- Configuration.xml의 typeAlias(별칭) 요소에 대한 설명.
+	
+		parameterType="MemberDto" 이렇게 바꿀 수도 있다.
+		Configuration.xml에서 typeAliases(별칭)을 지정했기 때문이다.
+	 -->
+	<insert id="insert" parameterType="MemberDto"> 
 		INSERT INTO member
 		(num, name, addr)
 		VALUES(member_seq.NEXTVAL, #{name}, #{addr}) <!-- #{} 부분은 MyBatis에서 사용하는 문법(?)이고 MemberDto에 있는 필드값의 바인딩 처리를 담당. 단, #{} 중괄호안에 들어가는 값은 MemberDto 필드의 이름이 들어가야한다. -->
@@ -26,7 +33,8 @@
 		WHERE num = #{num} 
 	</delete>
 	
-	<!-- 
+	<!-- resultType, parameterType에 대한 설명.
+	
 		resultType은 셀렉트된 결과를 어떤 타입으로 담을지를 결정(여기서는 MemberDto)
 		또한 DB의 칼럼명(num, name, addr)과 MemberDto의 필드명이 같아야 결과값이 MemberDto에 담긴다
 		

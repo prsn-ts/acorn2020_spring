@@ -29,7 +29,8 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
+	
+	<!-- 이 설정을 해야 스프링 프레임워크의 동작을 시작하게된다. -->
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>

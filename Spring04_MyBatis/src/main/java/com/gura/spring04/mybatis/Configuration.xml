@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 이 부분 때문에 Configuration.xml에 다양한 요소들을 작성할 수 있다. -->
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<!-- 너무 길어지는 com.gura.spring04.member.dto.MemberDto 이런식의 긴 문장을 alias="memberDto"로  별칭을 붙일 수 있다.-->
+	<typeAliases>
+		<typeAlias type="com.gura.spring04.member.dto.MemberDto" alias="memberDto"/>
+	</typeAliases>
+
 	<!-- 사용할 Mapper 목록 설정 -->
 	<mappers>
 		<mapper resource="com/gura/spring04/mybatis/MemberMapper.xml"></mapper>		

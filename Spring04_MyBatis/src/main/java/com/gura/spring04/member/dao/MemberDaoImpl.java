@@ -11,7 +11,7 @@ import com.gura.spring04.member.dto.MemberDto;
 //Component scan 을 했을 때 bean 이 되도록 어노테이션을 붙인다.
 //dao는 데이터를 저장 및 관리하는 의미에서 @Repository라고 생각하면된다
 //@Repository는 dao 를 bean 으로 만들기 위한 어노테이션(spring 이 관리하는 객체를 만들기 위한(주입받기 위한) 어노테이션)
-@Repository 
+@Repository // 이 어노테이션 때문에 new MemberDaoImpl() 한 듯이 객체를 bean으로부터 주입받는다.
 public class MemberDaoImpl implements MemberDao {
 	
 	/*
@@ -20,8 +20,8 @@ public class MemberDaoImpl implements MemberDao {
 		@Autowired는 런타임시에 bean에 존재하는 객체(SqlSession 등등)를 내부적으로 setter 또는 getter를 만들어서 값을 저장 및 추출한다
 	*/
 	//의존 객체 주입 받기(Dependency Injection)
-	@Autowired
-	private SqlSession session;
+	@Autowired //이 키워드로인해 MemberDaoImpl 클래스 안에서 SqlSession 객체가 필요한 시점(밑에 insert, update, delete 등의 메소드가 호출되기 바로 직전)에 주입된다.
+	private SqlSession session; //servlet-context.xml에서 SqlSession의 객체를 생성해서 bean container가 관리한다.
 	
 	@Override
 	public void insert(MemberDto dto) {

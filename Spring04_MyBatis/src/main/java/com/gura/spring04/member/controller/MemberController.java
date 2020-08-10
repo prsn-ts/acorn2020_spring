@@ -15,7 +15,7 @@ import com.gura.spring04.member.service.MemberService;
 public class MemberController {
 	//spring bean container에서 관리하는 객체 중 MemberDaoImpl의 의존객체를 주입 받도록 설정해주는 작업
 	//나중에는 spring bean container에서 관리하는 객체 중에 타입이 겹치는 부분이 있어서 @Autowired("아이디값 입력") 이런 식으로 겹치는 부분을 식별할 아이디를 부여한다고함.
-	@Autowired  
+	@Autowired //이 키워드가 붙어있으면 MemberService 객체가 필요한 시점(밑에 함수들(insert, delete, updateform 등)이 실행되기 바로 직전)에 bean container 안에 있는 MemberService 객체를 찾아서 MemberController 객체안에서 사용할 수 있도록 주입한다. 
 	private MemberService service;
 	
 	//POST 방식 /member/update 요청 처리 -> get 요청 처리를 완전히 무시한다.(404에러뜸)
