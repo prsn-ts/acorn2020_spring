@@ -7,10 +7,12 @@
 	<!-- 너무 길어지는 com.gura.spring04.member.dto.MemberDto 이런식의 긴 문장을 alias="memberDto"로  별칭을 붙일 수 있다.-->
 	<typeAliases>
 		<typeAlias type="com.gura.spring04.member.dto.MemberDto" alias="memberDto"/>
+		<typeAlias type="com.gura.spring04.todo.dto.TodoDto" alias="TodoDto"/>
 	</typeAliases>
 
 	<!-- 사용할 Mapper 목록 설정 -->
 	<mappers>
-		<mapper resource="com/gura/spring04/mybatis/MemberMapper.xml"></mapper>		
+		<mapper resource="com/gura/spring04/mybatis/MemberMapper.xml"></mapper>
+		<mapper resource="com/gura/spring04/mybatis/TodoMapper.xml"></mapper>	
 	</mappers>
 </configuration>
