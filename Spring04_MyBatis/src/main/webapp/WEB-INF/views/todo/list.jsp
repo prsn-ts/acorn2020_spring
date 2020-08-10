@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>/views/todo/list.jsp</title>
 </head>
 <body>
 	<a href="insertform.do">할일 추가 폼</a>

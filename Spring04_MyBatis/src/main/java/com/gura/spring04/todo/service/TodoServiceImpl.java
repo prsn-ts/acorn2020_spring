@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gura.spring04.member.dto.MemberDto;
 import com.gura.spring04.todo.dao.TodoDao;
 import com.gura.spring04.todo.dto.TodoDto;
 
@@ -24,11 +25,11 @@ public class TodoServiceImpl implements TodoService {
 	public void addTodo(TodoDto dto) {
 		dao.insert(dto);
 	}
-
+	//할일 정보를 수정하는 비즈니스 로직 처리
 	@Override
 	public void updateTodo(TodoDto dto) {
-		// TODO Auto-generated method stub
-		
+		//업데이트 로직 수행
+		dao.update(dto);
 	}
 
 	@Override
@@ -38,9 +39,12 @@ public class TodoServiceImpl implements TodoService {
 	}
 
 	@Override
+	//할일 하나의 정보를 불러와서 ModelAndView 객체에 담아주는 비즈니스 로직 처리
 	public void getTodo(int num, ModelAndView mView) {
-		// TODO Auto-generated method stub
-		
+		//수정할 회원의 정보를 얻어온다.
+		TodoDto dto = dao.getData(num);
+		//model 을 ModelAndView 객체에 담는다.
+		mView.addObject("dto", dto);
 	}
 
 	@Override

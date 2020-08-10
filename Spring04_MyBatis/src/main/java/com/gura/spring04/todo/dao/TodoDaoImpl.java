@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.gura.spring04.member.dto.MemberDto;
 import com.gura.spring04.todo.dto.TodoDto;
 
 @Repository //이 어노테이션으로 인해 bean container로부터 TodoDaoImpl 객체를 주입받는다.
@@ -26,8 +27,12 @@ public class TodoDaoImpl implements TodoDao {
 
 	@Override
 	public void update(TodoDto dto) {
-		// TODO Auto-generated method stub
-		
+		/*
+		 *  mapper namespace -> todo
+		 *  sql id -> update
+		 *  parameterType -> TodoDto
+		 */
+		session.update("todo.update", dto);
 	}
 
 	@Override
@@ -38,8 +43,10 @@ public class TodoDaoImpl implements TodoDao {
 
 	@Override
 	public TodoDto getData(int num) {
-		// TODO Auto-generated method stub
-		return null;
+		//num값에 맞는 DB에 저장된 할일 하나를 가져온다.
+		TodoDto dto = session.selectOne("todo.getData", num); //row가 하나인 경우 selectOne() 함수 사용.
+		//dto를 리턴한다.
+		return dto;
 	}
 
 	@Override

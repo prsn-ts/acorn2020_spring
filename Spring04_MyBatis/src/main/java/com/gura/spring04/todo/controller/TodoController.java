@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gura.spring04.member.dto.MemberDto;
 import com.gura.spring04.todo.dto.TodoDto;
 import com.gura.spring04.todo.service.TodoService;
 
@@ -14,6 +17,25 @@ public class TodoController {
 	
 	@Autowired
 	private TodoService service;
+	
+	//POST 방식 /todo/update 요청 처리 -> get 요청 처리를 완전히 무시한다.(404에러뜸)
+	@RequestMapping(value = "/todo/update", method = RequestMethod.POST)
+	public String update(@ModelAttribute TodoDto dto) {
+		service.updateTodo(dto);
+		return "todo/update";
+	}
+	
+	//GET 방식 /todo/updateform 요청 처리 -> post 요청 처리를 완전히 무시한다.(404에러뜸)
+	@RequestMapping(value = "/todo/updateform", method = RequestMethod.GET)
+	public ModelAndView updateform(@RequestParam int num, ModelAndView mView) {
+		
+		service.getTodo(num, mView);
+		
+		//view 페이지 정보를 ModelAndView 객체에 담는다.
+		mView.setViewName("todo/updateform");
+		//ModelAndView 객체를 리턴해준다.
+		return mView;
+	}
 	
 	//할일 추가 폼 요청 처리
 	@RequestMapping("/todo/insertform.do")
