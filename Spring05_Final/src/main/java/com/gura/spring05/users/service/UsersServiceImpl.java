@@ -46,4 +46,12 @@ public class UsersServiceImpl implements UsersService{
 			mView.addObject("isSuccess", false);
 		}
 	}
+
+	@Override
+	public void getData(UsersDto dto, String id, ModelAndView mView) {
+		//dao에 id에 해당하는 회원의 정보를 가져와서 dto에 저장한다.
+		dto = dao.getData(id);
+		//dto에 저장된 회원을 ModelAndView 객체에 키값으로 저장한다.
+		mView.addObject("dto", dto);
+	}
 }

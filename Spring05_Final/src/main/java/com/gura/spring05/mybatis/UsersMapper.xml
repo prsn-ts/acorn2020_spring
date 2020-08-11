@@ -17,4 +17,9 @@
 		FROM users
 		WHERE id=#{id} AND pwd=#{pwd}
 	</select>
+	<select id="getData" parameterType="java.lang.String" resultType="usersDto">
+		SELECT id, pwd, email, profile, regdate
+		FROM users
+		WHERE id=#{id}
+	</select>
 </mapper>

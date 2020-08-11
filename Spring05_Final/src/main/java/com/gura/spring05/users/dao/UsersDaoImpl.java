@@ -38,4 +38,10 @@ public class UsersDaoImpl implements UsersDao{
 			return true;
 		}
 	}
+
+	@Override
+	public UsersDto getData(String id) {
+		//SqlSession 객체에서 selectOne 함수를 통해 id에 해당하는 한명의 회원 정보를 가져온다.
+		return session.selectOne("users.getData", id);
+	}
 }

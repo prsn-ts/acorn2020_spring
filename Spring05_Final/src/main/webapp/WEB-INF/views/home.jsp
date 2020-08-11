@@ -15,7 +15,7 @@
 			<a href="${pageContext.request.contextPath}/users/signup_form.do">회원가입</a>
 		</c:when>
 		<c:otherwise>
-			<strong>${sessionScope.id }</strong>님 로그인중...
+			<strong><a href="users/private/info.do">${sessionScope.id }</a></strong>님 로그인중...
 			<a href="${pageContext.request.contextPath}/users/logout.do">로그아웃</a>
 		</c:otherwise>
 	</c:choose>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,18 @@ import com.gura.spring05.users.service.UsersService;
 public class UsersController {
 	@Autowired
 	private UsersService service;
+	
+	//info.do 요청 처리
+	@RequestMapping("users/private/info.do")
+	public ModelAndView info(@ModelAttribute UsersDto dto, HttpSession session, ModelAndView mView) {
+		//로그인된 아이디의 정보를 읽어온다.
+		String id = (String)session.getAttribute("id");
+		//비즈니스 로직은 service에서 수행한다.
+		service.getData(dto, id, mView);
+		// view 페이지로 forward 이동해서 응답하기
+		mView.setViewName("users/private/info");
+		return mView;
+	}
 	
 	//회원 가입 폼 요청 처리
 	@RequestMapping("/users/signup_form")
