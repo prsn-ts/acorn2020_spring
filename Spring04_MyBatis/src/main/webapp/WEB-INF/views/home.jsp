@@ -29,6 +29,7 @@
 	<!-- 파일 업로드 하는 부분 -->
 	<h2>파일 업로드 테스트</h2>
 	<form action="upload.do" method="post" enctype="multipart/form-data">
+		제목 <input type="text" name="title"/><br />
 		<input type="file" name="myFile" />
 		<button type="submit">업로드</button>
 	</form>

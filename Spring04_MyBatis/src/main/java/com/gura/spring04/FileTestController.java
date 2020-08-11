@@ -13,12 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileTestController {
 	
 	// 스프링에서 파일 처리하는 방법
-	//1. 파일을 어딘가의 임시 폴더에 저장해놓는다.
-	//2. 업로드된 파일의 정보가 MultipartFile myFile의 객체에 들어온다.
+	//1. 웹서버는 파일을 어딘가의 임시 폴더에 저장해놓는다.(임시 폴더에 저장된 파일은 시간이 지나면 저절로 사라진다) - 파일 정보는 원래는 바이트 알갱이로 이루어져있다. 이 바이트알갱이를 이어붙이면 우리가 매일 눈으로 보던 그 파일들이 완성된다.
+	//2. 업로드된 파일의 정보가 스프링에서 제공하는 MultipartFile 타입의 myFile의 객체에 들어온다.
 	//3. myFile 객체에 있는 정보를 가지고 임시 폴더에 저장된 파일을 upload 폴더(저장된 파일을 사용할 폴더)에 복사하는 작업을 해야한다.
 	@RequestMapping("/upload")
 	public String upload(@RequestParam MultipartFile myFile, // <input type="file" name="myFile" /> 하나만 전송되는 경우
-			HttpServletRequest request) { //필요시 HttpServletRequest를 선언하면 Controller가 객체의 참조값을 넣어준다.
+			@RequestParam String title, HttpServletRequest request) { //필요시 HttpServletRequest를 선언하면 Controller가 객체의 참조값을 넣어준다.
 		//원본 파일명과 파일의 크기를 알아낸다.
 		//원본 파일명
 		String orgFileName = myFile.getOriginalFilename();
@@ -26,7 +26,7 @@ public class FileTestController {
 		long fileSize = myFile.getSize();
 		
 		//임시 폴더에 있는 파일을 upload 폴더에 옮겨야한다.
-		// webapp/upload 폴더 까지의 실제 경로
+		// webapp/upload 폴더 까지의 실제 경로(서버의 파일 시스템 상에서의 경로)
 		String realPath = request.getServletContext().getRealPath("/upload");
 		//저장할 파일의 상세 경로
 		String filePath = realPath+File.separator;
@@ -40,6 +40,7 @@ public class FileTestController {
 				System.currentTimeMillis()+orgFileName;
 		try {
 			//upload 폴더에 파일을 저장한다.
+			//(서버의 파일 시스템 상에서의 경로+File.separator(filePath)와 저장된 파일 이름(saveFileName)의 정보를 가진 파일 객체를 생성한 후에 transferTo 함수의 인자로 던져주면 내부적으로 임시 폴더에 있던 파일을 upload 폴더에 옮겨준다(저장해준다))
 			myFile.transferTo(new File(filePath+saveFileName));
 			System.out.println(filePath+saveFileName);
 		}catch(Exception e) {
@@ -49,6 +50,7 @@ public class FileTestController {
 		request.setAttribute("orgFileName", orgFileName);
 		request.setAttribute("saveFileName", saveFileName);
 		request.setAttribute("fileSize", fileSize);
+		request.setAttribute("title", title);
 		return "upload";
 	}
 }
