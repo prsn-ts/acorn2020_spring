@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gura.spring05.users.dto.UsersDto;
@@ -43,6 +44,7 @@ public class UsersController {
 		return mView;
 	}
 	
+	//탈퇴 요청 처리
 	@RequestMapping("users/private/delete")
 	public ModelAndView delete(HttpServletRequest request,
 			ModelAndView mView) {
@@ -121,4 +123,26 @@ public class UsersController {
 		session.invalidate();
 		return "redirect:/home.do";
 	}
+	
+	//회원정보 수정폼 요청 처리
+	@RequestMapping("users/private/updateform")
+	public ModelAndView updateForm(HttpServletRequest request,
+			ModelAndView mView) {
+		service.getInfo(request.getSession(), mView);
+		mView.setViewName("users/private/updateform");
+		return mView;
+	}
+	
+	//ajax 프로필 사진 업로드 요청 처리
+	@RequestMapping("/users/private/profile_upload")
+	@ResponseBody
+	public Map<String, Object> profile_upload
+		(HttpServletRequest request, @RequestParam MultipartFile image){ //필요한 객체들은 controller에서 생성해야한다 service 쪽에서는 생성이 안된다.
+		//service 객체를 이용해서 이미지를 upload 폴더에 저장하고 Map 을 리턴 받는다.
+		Map<String, Object> map = service.saveProfileImage(request, image);
+		//{"imageSrc":"/upload/xxx.jpg"} 형식의 JSON 문자열을 출력하기 위해
+		//Map 을 @ResponseBody로 리턴해준다.
+		return map;
+	}
+	
 }

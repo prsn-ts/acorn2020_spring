@@ -2,8 +2,11 @@ package com.gura.spring05.users.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gura.spring05.users.dto.UsersDto;
@@ -24,4 +27,7 @@ public interface UsersService {
 	public void getInfo(HttpSession session, ModelAndView mView);
 	//탈퇴 요청 관련 추상 메소드
 	public void deleteUser(HttpSession session);
+	//프로필 업로드 관련 처리 추상 메소드
+	public Map<String, Object> saveProfileImage(HttpServletRequest request,
+			@RequestParam MultipartFile image);
 }
