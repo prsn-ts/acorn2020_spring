@@ -25,5 +25,15 @@
 	      <artifactId>spring-context</artifactId>
 	      <version>4.0.0.RELEASE</version>
 	  </dependency>
+	  
+		<!-- 
+			https://mvnrepository.com/artifact/org.springframework.security/spring-security-web
+			DB에 저장되는 비밀번호의 보안 처리를 위한 라이브러리.
+		 -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>4.0.0.RELEASE</version>
+		</dependency>
   </dependencies>
 </project>
