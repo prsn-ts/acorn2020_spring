@@ -46,12 +46,24 @@ public class UsersServiceImpl implements UsersService{
 			mView.addObject("isSuccess", false);
 		}
 	}
-
+	/*
+	//나의 info.do 요청 관련 추상 메소드
 	@Override
 	public void getData(UsersDto dto, String id, ModelAndView mView) {
 		//dao에 id에 해당하는 회원의 정보를 가져와서 dto에 저장한다.
 		dto = dao.getData(id);
 		//dto에 저장된 회원을 ModelAndView 객체에 키값으로 저장한다.
+		mView.addObject("dto", dto);
+	}
+	*/
+	//Teacher info.do 요청 관련 추상 메소드
+	@Override
+	public void getInfo(HttpSession session, ModelAndView mView) {
+		//로그인된 아이디를 session 객체를 이용해서 얻어온다.
+		String id=(String)session.getAttribute("id");
+		//dao 를 이용해서 사용자 정보를 얻어와서
+		UsersDto dto = dao.getData(id);
+		//mView 객체에 담아준다.
 		mView.addObject("dto", dto);
 	}
 }

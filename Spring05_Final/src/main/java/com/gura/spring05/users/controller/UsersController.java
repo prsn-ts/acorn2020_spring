@@ -22,7 +22,8 @@ public class UsersController {
 	@Autowired
 	private UsersService service;
 	
-	//info.do 요청 처리
+	/*
+	//개인정보 보기 요청 처리(info.do 요청 처리)
 	@RequestMapping("users/private/info.do")
 	public ModelAndView info(@ModelAttribute UsersDto dto, HttpSession session, ModelAndView mView) {
 		//로그인된 아이디의 정보를 읽어온다.
@@ -30,6 +31,14 @@ public class UsersController {
 		//비즈니스 로직은 service에서 수행한다.
 		service.getData(dto, id, mView);
 		// view 페이지로 forward 이동해서 응답하기
+		mView.setViewName("users/private/info");
+		return mView;
+	}
+	*/
+	//개인정보 보기 요청 처리(info.do 요청 처리)
+	@RequestMapping("users/private/info.do")
+	public ModelAndView info(HttpServletRequest request, ModelAndView mView) {
+		service.getInfo(request.getSession(), mView);
 		mView.setViewName("users/private/info");
 		return mView;
 	}

@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-	<!-- 처음 서버 가동 시 가장 먼저 실행될 파일 -->
+	<!-- 처음 서버 가동 시 가장 먼저 실행될 파일(home.do 요청이 실행되면서 Controller로 forword 이동됨) -->
 	<welcome-file-list>
 		<welcome-file>home.do</welcome-file>
 	</welcome-file-list>

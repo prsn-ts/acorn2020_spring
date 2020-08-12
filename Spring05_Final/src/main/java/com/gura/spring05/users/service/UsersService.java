@@ -16,6 +16,10 @@ public interface UsersService {
 	//로그인 처리하는 추상 메소드
 	public void loginProcess(UsersDto dto, ModelAndView mView,
 			HttpSession session);
+	/*
 	//로그인된 회원의 정보를 가져오기위한 메소드
 	public void getData(UsersDto dto, String id, ModelAndView mView);
+	*/
+	//Teacher의 info.do 요청 관련 메소드
+	public void getInfo(HttpSession session, ModelAndView mView);
 }
