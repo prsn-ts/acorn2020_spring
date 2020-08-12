@@ -156,4 +156,23 @@ public class UsersController {
 		return mView;
 	}
 	
+	//비밀번호 수정 폼 요청 처리
+	@RequestMapping("users/private/pwd_updateform")
+	public ModelAndView pwdUpdateform(ModelAndView mView) {
+		
+		mView.setViewName("users/private/pwd_updateform");
+		return mView;
+	}
+	
+	//비밀번호 수정하기 요청 처리
+	@RequestMapping("/users/private/pwd_update")
+	public ModelAndView pwdUpdate(ModelAndView mView,
+			UsersDto dto, HttpServletRequest request) {
+		//service 객체를 이용해서 새로운 비밀번호로 수정한다.
+		service.updateUserPwd(request.getSession(), dto, mView);
+		//view 페이지로 forward 이동해서 응답
+		mView.setViewName("users/private/pwd_update");
+		return mView;
+	}
+	
 }

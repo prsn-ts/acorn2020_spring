@@ -13,4 +13,6 @@ public interface UsersDao {
 	public void delete(String id);
 	//개인정보 수정 요청 처리하는 추상 메소드
 	public void update(UsersDto dto);
+	//비밀번호 수정 요청 처리하는 추상 메소드
+	public boolean updatePwd(UsersDto dto);
 }

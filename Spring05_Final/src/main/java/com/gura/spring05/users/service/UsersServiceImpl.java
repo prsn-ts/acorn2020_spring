@@ -120,6 +120,8 @@ public class UsersServiceImpl implements UsersService{
 		String id = (String)session.getAttribute("id");
 		//UsersDto 에 담고
 		dto.setId(id);
+		//프로필 없이 개인정보 수정했을 때 들어오는 값 타입 확인용.
+		System.out.println("dto:"+dto.getProfile().getClass().getName());
 		/*
 		//만일 프로필 이미지를 수정하지 않았다면 hidden type의 value가 "" 빈 문자열이 넣어져있으므로 직접 null을 dto에 넣기.
 		if(dto.getProfile().equals("")) {
@@ -128,5 +130,15 @@ public class UsersServiceImpl implements UsersService{
 		*/
 		//dao 를 이용해서 수정반영하기
 		dao.update(dto);
+	}
+
+	@Override
+	public void updateUserPwd(HttpSession session, UsersDto dto, ModelAndView mView) {
+		String id = (String)session.getAttribute("id");
+		dto.setId(id);
+		//dao 를 이용해서 비밀번호를 수정한다.(실패 가능성 있음)
+		boolean isSuccess = dao.updatePwd(dto);
+		//mView 객체에 성공 여부를 담는다.
+		mView.addObject("isSuccess", isSuccess);
 	}
 }

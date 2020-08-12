@@ -32,4 +32,7 @@ public interface UsersService {
 			@RequestParam MultipartFile image);
 	//개인정보 수정 요청 관련 추상 메소드
 	public void updateUser(HttpSession session, UsersDto dto);
+	//비밀번호 수정 요청 관련 추상 메소드
+	public void updateUserPwd(HttpSession session, UsersDto dto,
+			ModelAndView mView);
 }
