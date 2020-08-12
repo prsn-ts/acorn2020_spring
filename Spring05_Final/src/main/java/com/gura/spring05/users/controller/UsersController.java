@@ -63,7 +63,7 @@ public class UsersController {
 		return "users/signup_form";
 	}
 	
-	//아이디가 존재하는 지 여부를 처리하는 요청처리
+	//아이디가 존재하는 지 여부에 대한 요청 처리
 	@RequestMapping("/users/checkid")
 	@ResponseBody
 	public Map<String, Object> checkid(@RequestParam String inputId){
@@ -81,6 +81,7 @@ public class UsersController {
 		return mView;
 	}
 	
+	//로그인 폼 요청 처리
 	@RequestMapping("users/loginform")
 	public String loginform(HttpServletRequest request) {
 		//url 파라미터가 넘어오는지 읽어와 보기
@@ -89,12 +90,12 @@ public class UsersController {
 			String cPath=request.getContextPath();
 			url=cPath+"/home.do"; //로그인 후 인덱스 페이지로 가도록 하기 위해
 		}
-		//request 에 담는다.
+		//url 파라미터가 있는 경우 request 에 담는다.
 		request.setAttribute("url", url);
 		return "users/loginform";
 	}
 	
-	//회원 가입 요청 처리
+	//로그인 요청 처리
 	@RequestMapping("users/login")
 	public ModelAndView login(UsersDto dto, ModelAndView mView,
 			HttpSession session, HttpServletRequest request) {

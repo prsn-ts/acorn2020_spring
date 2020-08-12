@@ -82,7 +82,6 @@ public class UsersServiceImpl implements UsersService{
 
 	@Override
 	public Map<String, Object> saveProfileImage(HttpServletRequest request, MultipartFile mFile) {
-		//원본 파일명과 파일의 크기를 알아낸다.
 		//원본 파일명
 		String orgFileName = mFile.getOriginalFilename();
 		

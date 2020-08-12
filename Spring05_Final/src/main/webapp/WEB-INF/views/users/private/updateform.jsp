@@ -87,15 +87,14 @@
 		*/
 		//기존 프로필 이미지 요소를 제거한다.
 		$("#profileImage").remove();
+		
+		//프로필 이미지를 업데이트 한다. data => {imageSrc:"/upload/xxx.jpg"}
 		//새로 img 요소를 만들어서 #profileLink 에 추가한다.
 		$("<img/>")
 		.attr("id", "profileImage")
 		.attr("src", "${pageContext.request.contextPath}"+data.imageSrc)
 		.appendTo("#profileLink");
 		
-		//프로필 이미지를 업데이트 한다. data => {imageSrc:"/upload/xxx.jpg"}
-		$("#profileImage")
-		.attr("src","${pageContext.request.contextPath}"+data.imageSrc);
 		//회원정보 수정폼 전송될 때 같이 프로필 정보도 같이 전송 되도록 한다.
 		$("#profile").val(data.imageSrc); // input type="hidden"의 value값
 	})
