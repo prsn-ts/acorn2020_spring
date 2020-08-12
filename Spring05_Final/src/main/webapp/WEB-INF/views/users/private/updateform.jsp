@@ -43,9 +43,9 @@
 			</c:otherwise>
 		</c:choose>
 	</a>
-	<form action="update.jsp" method="post">
+	<form action="update.do" method="post">
 		<%-- 프로필 이미지를 DB에 저장하기 위해 hidden type으로 설정. --%>
-		<input type="hidden" name="profile" id="profile" value="${dto.profile }"/>
+		<input type="hidden" name="profile" id="profile" value="${dto.profile }"/> <!-- el문법 기준으로 dto의 profile 값이 null 일 경우에 value="" -> 이런식의 빈 문자열을 보여준다. -->
 		<div class="form-group">
 			<label for="id">아이디</label>
 			<input class="form-control" type="text" id="id" value="${dto.id }" disabled />

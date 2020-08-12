@@ -113,4 +113,20 @@ public class UsersServiceImpl implements UsersService{
 		
 		return map;
 	}
+
+	@Override
+	public void updateUser(HttpSession session, UsersDto dto) {
+		//로그인된 아이디를 읽어와서
+		String id = (String)session.getAttribute("id");
+		//UsersDto 에 담고
+		dto.setId(id);
+		/*
+		//만일 프로필 이미지를 수정하지 않았다면 hidden type의 value가 "" 빈 문자열이 넣어져있으므로 직접 null을 dto에 넣기.
+		if(dto.getProfile().equals("")) {
+			dto.setProfile(null);
+		}
+		*/
+		//dao 를 이용해서 수정반영하기
+		dao.update(dto);
+	}
 }

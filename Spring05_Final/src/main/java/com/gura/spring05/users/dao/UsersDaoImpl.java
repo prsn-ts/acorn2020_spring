@@ -53,9 +53,14 @@ public class UsersDaoImpl implements UsersDao{
 		UsersDto dto = session.selectOne("users.getData", id);
 		return dto;
 	}
-
+	//탈퇴 처리하는 메소드
 	@Override
 	public void delete(String id) {
 		session.delete("users.delete", id);
+	}
+	//개인정보 수정하는 메소드
+	@Override
+	public void update(UsersDto dto) {
+		session.update("users.update", dto);
 	}
 }

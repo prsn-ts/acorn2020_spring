@@ -30,4 +30,6 @@ public interface UsersService {
 	//프로필 업로드 관련 처리 추상 메소드
 	public Map<String, Object> saveProfileImage(HttpServletRequest request,
 			@RequestParam MultipartFile image);
+	//개인정보 수정 요청 관련 추상 메소드
+	public void updateUser(HttpSession session, UsersDto dto);
 }

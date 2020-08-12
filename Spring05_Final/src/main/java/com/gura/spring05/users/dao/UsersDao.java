@@ -11,4 +11,6 @@ public interface UsersDao {
 	public UsersDto getData(String id);
 	//탈퇴 처리하는 추상 메소드
 	public void delete(String id);
+	//개인정보 수정 요청 처리하는 추상 메소드
+	public void update(UsersDto dto);
 }
