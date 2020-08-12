@@ -22,4 +22,6 @@ public interface UsersService {
 	*/
 	//Teacher의 info.do 요청 관련 메소드
 	public void getInfo(HttpSession session, ModelAndView mView);
+	//탈퇴 요청 관련 추상 메소드
+	public void deleteUser(HttpSession session);
 }

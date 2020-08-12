@@ -9,4 +9,6 @@ public interface UsersDao {
 	public boolean isValid(UsersDto dto);
 	//로그인한 회원의 정보를 가져오는 메소드
 	public UsersDto getData(String id);
+	//탈퇴 처리하는 추상 메소드
+	public void delete(String id);
 }

@@ -53,4 +53,9 @@ public class UsersDaoImpl implements UsersDao{
 		UsersDto dto = session.selectOne("users.getData", id);
 		return dto;
 	}
+
+	@Override
+	public void delete(String id) {
+		session.delete("users.delete", id);
+	}
 }
