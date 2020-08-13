@@ -35,4 +35,9 @@ public class FileDaoImpl implements FileDao{
 		return session.selectOne("file.getData", num);
 	}
 
+	@Override
+	public void delete(int num) {
+		session.delete("file.delete", num);
+	}
+
 }
