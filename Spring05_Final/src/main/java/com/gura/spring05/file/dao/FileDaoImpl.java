@@ -24,5 +24,10 @@ public class FileDaoImpl implements FileDao{
 	public int getCount(FileDto dto) {
 		return session.selectOne("file.getCount", dto);
 	}
+	//파일 업로드 요청 시 DB에 저장하는 메소드
+	@Override
+	public void insert(FileDto dto) {
+		session.insert("file.insert", dto);
+	}
 
 }
