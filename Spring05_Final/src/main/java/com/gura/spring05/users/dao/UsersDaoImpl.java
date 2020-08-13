@@ -27,7 +27,7 @@ public class UsersDaoImpl implements UsersDao{
 	public void insert(UsersDto dto) {
 		session.insert("users.insert", dto);
 	}
-
+	/* DB에 비밀번호 암호화 처리로 인해 사용안함.
 	@Override
 	public boolean isValid(UsersDto dto) {
 		String id = session.selectOne("users.isValid", dto);
@@ -38,6 +38,7 @@ public class UsersDaoImpl implements UsersDao{
 			return true;
 		}
 	}
+	*/
 	/*
 	//인자로 전달되는 id에 해당되는 사용자 정보를 리턴하는 메소드
 	@Override
@@ -63,7 +64,7 @@ public class UsersDaoImpl implements UsersDao{
 	public void update(UsersDto dto) {
 		session.update("users.update", dto);
 	}
-
+	/* DB에 비밀번호 암호화 처리로 인해 사용안함.
 	@Override
 	public boolean updatePwd(UsersDto dto) {
 		//update 문의 영향을 받은 row 의 개수가 리턴된다.
@@ -73,5 +74,11 @@ public class UsersDaoImpl implements UsersDao{
 		}else {
 			return false;
 		}
+	}
+	*/
+	@Override
+	public void updatePwd(UsersDto dto) {
+		//update 문의 영향을 받은 row 의 개수가 리턴된다.
+		session.update("users.updatePwd", dto);
 	}
 }
