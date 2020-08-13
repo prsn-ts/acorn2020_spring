@@ -54,7 +54,10 @@ public class FileController {
 			ModelAndView mView) {
 		fileService.getFileData(num, mView);
 		//view 페이지로 이동해서 다운로드 시켜준다.
-		mView.setViewName("file/download");
+		//@Component("fileDownView") 가 붙어있는 AbstractView 객체를 찾아간다.
+		//Container에서 view 객체가 존재하면 그 객체로 이동하고 view 객체가 없다면
+		// /WEB-INF/views/fileDownView.jsp로 이동한다.(view 객체의 개념이 도입됨.)
+		mView.setViewName("fileDownView"); 
 		return mView;
 	}
 }
