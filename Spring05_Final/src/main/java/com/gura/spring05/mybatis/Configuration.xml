@@ -4,15 +4,19 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
-	<!-- UsersDto 별칭 설정. -->
+	<!-- type  별칭 등록 -->
 	<typeAliases>
+		<!-- UsersDto 별칭 설정. -->
 		<typeAlias type="com.gura.spring05.users.dto.UsersDto"
 			alias="usersDto"/>
+		<!-- fileDto 별칭 설정. -->
+		<typeAlias type="com.gura.spring05.file.dto.FileDto" 
+			alias="fileDto"/>
 	</typeAliases>
 
 	<!-- UsersMapper.xml 문서가 동작하기위한 설정. -->
 	<mappers>
 		<mapper resource="com/gura/spring05/mybatis/UsersMapper.xml"/>
+		<mapper resource="com/gura/spring05/mybatis/FileMapper.xml"/>
 	</mappers>
 </configuration>
