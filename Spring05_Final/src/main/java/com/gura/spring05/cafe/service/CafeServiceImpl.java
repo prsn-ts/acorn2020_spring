@@ -22,8 +22,6 @@ public class CafeServiceImpl implements CafeService{
 
 	@Override
 	public void getList(HttpServletRequest request) {
-		//로그인 된 아이디 읽어오기(로그인을 하지 않으면 null 이다)
-		String id=(String)request.getSession().getAttribute("id"); //변수 id는 로그인한 아이디 이름 or null 이다.
 		
 		//보여줄 페이지의 번호
 		int pageNum=1;
