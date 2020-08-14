@@ -33,6 +33,10 @@ public class UsersServiceImpl implements UsersService{
 
 	@Override
 	public void addUser(UsersDto dto) {
+		//비밀번호를 암호화할 BcryptPasswordEncoder 객체 생성.
+		BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+		//dto에 있는 입력된 비밀번호 암호화해서 다시 dto의 pwd 필드에 넣는다.
+		dto.setPwd(pe.encode(dto.getPwd()));
 		// dao 객체를 이용해서 새로운 사용자 정보를 DB에 저장하기
 		dao.insert(dto);
 	}
