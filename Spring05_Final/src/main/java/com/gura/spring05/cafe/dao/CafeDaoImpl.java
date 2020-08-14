@@ -47,4 +47,11 @@ public class CafeDaoImpl implements CafeDao{
 	public void update(CafeDto dto) {
 		session.update("cafe.update", dto);
 	}
+
+	//검색 키워드와 글 번호를 이용해서 나온 검색 결과에 대한 이전글, 다음글 처리하는 메소드
+	//키워드가 들어있는 CafeDto 를 전달받아서 글 정보를 리턴하는 메소드
+	@Override
+	public CafeDto getData(CafeDto dto) {
+		return session.selectOne("cafe.getData2", dto);
+	}
 }

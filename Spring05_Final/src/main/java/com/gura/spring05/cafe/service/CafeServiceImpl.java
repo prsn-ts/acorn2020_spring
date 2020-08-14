@@ -100,4 +100,61 @@ public class CafeServiceImpl implements CafeService{
 		request.setAttribute("keyword", keyword);
 		request.setAttribute("encodedK", encodedK);
 	}
+
+	@Override
+	public void getDetail(HttpServletRequest request) {
+		//파라미터로 전달되는 글번호
+		int num = Integer.parseInt(request.getParameter("num"));
+		/*
+		검색 키워드에 관련된 처리
+		*/
+		String keyword = request.getParameter("keyword");
+		String condition = request.getParameter("condition");
+		if(keyword == null){//전달된 키워드가 없다면
+			//condition, keyword의 파라미터값이 null이 찍히지 않도록 하기 위함.(파라미터로 넘어오는 값이 null로 찍힐 경우 문제가 생길 수도 있다고 함.)
+			keyword = ""; //빈 문자열을 넣어준다.
+			condition = ""; //빈 문자열을 넣어준다.
+		}
+		
+		//keyword 변수의 내용을 파라미터로 전송할 때 인코딩된 키워드로 보내기 위함.
+		//인코딩안된 내용을 파라미터로 보내면 문제가 발생할 수도 있다.
+		//인코딩된 키워드를 미리 만들어 둔다.
+		String encodedK = URLEncoder.encode(keyword);
+		
+		//keyword와 condition 변수에 null값이 들어오는지 확인용.
+		//request.getParameter("keyword"), request.getParameter("keyword")의 값이 없는 경우 null값이 들어간다.
+		System.out.println(keyword);
+		System.out.println(condition);
+		
+		//글 번호와 검색 키워드를 담을 CafeDto 객체 생성
+		CafeDto dto = new CafeDto();
+		dto.setNum(num); //글 번호 담기
+		
+		if(!keyword.equals("")){ //만일 키워드가 넘어온다면
+			if(condition.equals("title_content")){
+				//검색 키워드를 CafeDto 객체의 필드에 담는다.
+				dto.setTitle(keyword);
+				dto.setContent(keyword);
+			}else if(condition.equals("title")){
+				dto.setTitle(keyword);
+			}else if(condition.equals("writer")){
+				dto.setWriter(keyword);
+			}
+		}
+			//키워드와 글 번호를 이용해 DB에 검색된 자세히 보여줄 글 정보
+			CafeDto resultDto = cafeDao.getData(num);
+			//request 에 담기
+			request.setAttribute("dto", resultDto);
+			request.setAttribute("condition", condition);
+			request.setAttribute("keyword", keyword);
+			request.setAttribute("encodedK", encodedK);
+			
+			//글 조회수 올리기
+			cafeDao.addViewCount(num);
+	}
+	//카페에 새글 올리기 메소드
+	@Override
+	public void saveContent(CafeDto dto) {
+		cafeDao.insert(dto);
+	}
 }
