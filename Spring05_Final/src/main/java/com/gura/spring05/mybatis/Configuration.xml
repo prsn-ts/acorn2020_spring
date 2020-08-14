@@ -12,11 +12,15 @@
 		<!-- fileDto 별칭 설정. -->
 		<typeAlias type="com.gura.spring05.file.dto.FileDto" 
 			alias="fileDto"/>
+		<!-- cafeDto 별칭 설정. -->
+		<typeAlias type="com.gura.spring05.cafe.dto.CafeDto"
+			alias="cafeDto"/>
 	</typeAliases>
 
-	<!-- UsersMapper.xml 문서가 동작하기위한 설정. -->
+	<!-- Mapper 문서가 동작하기위한 설정. -->
 	<mappers>
 		<mapper resource="com/gura/spring05/mybatis/UsersMapper.xml"/>
 		<mapper resource="com/gura/spring05/mybatis/FileMapper.xml"/>
+		<mapper resource="com/gura/spring05/mybatis/CafeMapper.xml"/>
 	</mappers>
 </configuration>
