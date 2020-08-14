@@ -17,19 +17,20 @@
 </head>
 <body>
 <div class="container">
-	<h1>새글 작성 양식 입니다.</h1>
-	<form action="insert.do" method="post">
+	<h1>수정 폼 입니다.</h1>
+	<form action="update.do" method="post">
+		<input type="hidden" name="num" value="${param.num }" />
 		<div class="form-group">
 			<label for="writer">작성자</label>
 			<input class="form-control" type="text" value="${id }" disabled/>
 		</div>
 		<div class="form-group">
 			<label for="title">제목</label>
-			<input class="form-control" type="text" name="title" id="title"/>
+			<input class="form-control" type="text" name="title" id="title" value="${dto.title }"/>
 		</div>
 		<div class="form-group">
 			<label for="content">내용</label>
-			<textarea class="form-control" name="content" id="content" cols="30" rows="10"></textarea>
+			<textarea class="form-control" name="content" id="content" cols="30" rows="10" value="${dto.content }"></textarea>
 		</div>
 		<button class="btn btn-outline-primary" type="submit" onclick="submitContents(this);">저장</button>
 		<button class="btn btn-outline-warning" type="reset">취소</button>
@@ -105,13 +106,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

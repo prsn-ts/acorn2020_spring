@@ -11,4 +11,6 @@ public interface CafeService {
 	public void getDetail(HttpServletRequest request);
 	//카페 새글 작성 요청 관련 메소드
 	public void saveContent(CafeDto dto);
+	//카페 수정하기 요청 관련 메소드
+	public void updateContent(CafeDto dto);
 }

@@ -157,4 +157,9 @@ public class CafeServiceImpl implements CafeService{
 	public void saveContent(CafeDto dto) {
 		cafeDao.insert(dto);
 	}
+	//카페에 자신이 쓴글 수정하는 메소드
+	@Override
+	public void updateContent(CafeDto dto) {
+		cafeDao.update(dto);
+	}
 }

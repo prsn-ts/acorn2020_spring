@@ -42,12 +42,28 @@ public class CafeController {
 	}
 	//카페 새글 작성하기 요청 처리
 	@RequestMapping(value = "/cafe/private/insert", method=RequestMethod.POST)
-	public ModelAndView insertForm(CafeDto dto, ModelAndView mView, HttpSession session) {
+	public ModelAndView insert(CafeDto dto, ModelAndView mView, HttpSession session) {
 		//dto 에 글 작성자 담기
 		String id = (String)session.getAttribute("id");
 		dto.setWriter(id);
 		cafeService.saveContent(dto);
 		mView.setViewName("cafe/insert");
+		return mView;
+	}
+	
+	//카페 자신이 쓴 글 수정 폼 요청 처리
+	@RequestMapping("/cafe/private/updateform.do")
+	public ModelAndView updateForm(ModelAndView mView, HttpServletRequest request) {
+		cafeService.getDetail(request);
+		mView.setViewName("cafe/updateform");
+		return mView;
+	}
+	
+	//카페 자신이 쓴 글 수정하기 요청 처리
+	@RequestMapping("/cafe/private/update")
+	public ModelAndView update(CafeDto dto, ModelAndView mView) {
+		cafeService.updateContent(dto);
+		mView.setViewName("cafe/update");
 		return mView;
 	}
 }
