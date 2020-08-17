@@ -14,7 +14,7 @@ public interface CafeDao {
 	//글 정보 얻어오기
 	public CafeDto getData(int num);
 	//키워드를 활용한 글 정보 얻어오기
-	public CafeDto getData(CafeDto dto); //메소드 오버로딩(다중 정의, 같은 이름으로 여러개를 정의) -> 인자값이 달라서 메소드 이름이 달라도 오류 X
+	public CafeDto getData(CafeDto dto); //메소드 오버로딩(다중 정의, 같은 이름으로 여러개를 정의) -> 인자값이 달라서 메소드 이름이 같아도 오류 X
 	//조회수 증가 시키기
 	public void addViewCount(int num);
 	//글 삭제

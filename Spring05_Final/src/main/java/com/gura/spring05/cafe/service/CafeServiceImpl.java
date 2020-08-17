@@ -142,7 +142,7 @@ public class CafeServiceImpl implements CafeService{
 			}
 		}
 			//키워드와 글 번호를 이용해 DB에 검색된 자세히 보여줄 글 정보
-			CafeDto resultDto = cafeDao.getData(num);
+			CafeDto resultDto = cafeDao.getData(dto);
 			//request 에 담기
 			request.setAttribute("dto", resultDto);
 			request.setAttribute("condition", condition);
