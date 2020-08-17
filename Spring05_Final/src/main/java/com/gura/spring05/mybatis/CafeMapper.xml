@@ -39,15 +39,15 @@
 	</select>
 	<insert id="insert" parameterType="cafeDto">
 		INSERT INTO board_cafe
-		(num,writer,title,content,viewCount)
-		VALUES(board_cafe_seq.NEXTVAL,#{writer},#{title},#{content},#{viewCount})
+		(num,writer,title,content,viewCount,regdate)
+		VALUES(board_cafe_seq.NEXTVAL,#{writer},#{title},#{content},#{viewCount},SYSDATE)
 	</insert>
 	<!-- ※주의!※ sql문에서 별칭을 붙인 regdate, prevNum, nextNum 등의 이름이 cafeDto의 필드명과 일치해야 select된 결과가 cafeDto에 저장된다. -->
 	<select id="getData" parameterType="int" resultType="cafeDto">
 		SELECT result1.*
 		FROM
 			(SELECT num,writer,title,content,viewCount,
-				TO_CHAR(regdate,'YY.MM.DD HH24:MI') AS regdate,
+				TO_CHAR(regdate,'YYYY-MM-DD') AS regdate,
 				LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
 				LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
 			FROM board_cafe) result1
@@ -57,7 +57,7 @@
 		SELECT result1.*
 		FROM
 			(SELECT num,writer,title,content,viewCount,
-				TO_CHAR(regdate,'YY.MM.DD HH24:MI') AS regdate,
+				TO_CHAR(regdate,'YYYY-MM-DD') AS regdate,
 				LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
 				LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
 			FROM board_cafe
