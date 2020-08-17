@@ -13,4 +13,6 @@ public interface CafeService {
 	public void saveContent(CafeDto dto);
 	//카페 수정하기 요청 관련 메소드
 	public void updateContent(CafeDto dto);
+	//카페 글 삭제하기 요청 관련 메소드
+	public void deleteWriting(int num);
 }

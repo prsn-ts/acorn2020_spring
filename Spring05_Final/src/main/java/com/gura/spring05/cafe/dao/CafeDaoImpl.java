@@ -39,8 +39,15 @@ public class CafeDaoImpl implements CafeDao{
 	}
 
 	@Override
-	public void delete(int num) {
-		session.delete("cafe.delete", num);
+	public boolean delete(int num) {
+		int sqlresult = session.delete("cafe.delete", num);
+		if(sqlresult <= 0) {
+			System.out.println("삭제된 것이 없습니다.");
+			return false;
+		}else {
+			System.out.println("삭제된 것이 있습니다!!");
+			return true;
+		}
 	}
 
 	@Override

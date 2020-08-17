@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gura.spring05.cafe.dto.CafeDto;
@@ -65,5 +66,12 @@ public class CafeController {
 		cafeService.updateContent(dto);
 		mView.setViewName("cafe/update");
 		return mView;
+	}
+	
+	//카페 자신이 쓴 글 삭제하기 요청 처리
+	@RequestMapping("/cafe/private/delete")
+	public String delete(@RequestParam int num) {
+		cafeService.deleteWriting(num);
+		return "redirect:/cafe/list.do";
 	}
 }
