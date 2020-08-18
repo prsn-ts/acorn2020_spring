@@ -14,7 +14,7 @@ public interface CafeService {
 	//카페 수정하기 요청 관련 추상 메소드
 	public void updateContent(CafeDto dto);
 	//카페 글 삭제하기 요청 관련 추상 메소드
-	public void deleteWriting(int num);
+	public void deleteWriting(int num, HttpServletRequest request);
 	//새로운 댓글을 저장하는 추상 메소드
 	public void saveComment(HttpServletRequest request); //댓글 저장
 }

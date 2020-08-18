@@ -12,6 +12,7 @@ import com.gura.spring05.cafe.dao.CafeCommentDao;
 import com.gura.spring05.cafe.dao.CafeDao;
 import com.gura.spring05.cafe.dto.CafeCommentDto;
 import com.gura.spring05.cafe.dto.CafeDto;
+import com.gura.spring05.exception.NotDeleteException;
 
 @Service
 public class CafeServiceImpl implements CafeService{
@@ -174,7 +175,15 @@ public class CafeServiceImpl implements CafeService{
 	}
 	//카페에 자신이 쓴 글 삭제하는 메소드
 	@Override
-	public void deleteWriting(int num) {
+	public void deleteWriting(int num, HttpServletRequest request) {
+		//1. 삭제할 글의 정보를 읽어온다.
+		CafeDto dto=cafeDao.getData(num);
+		//2. 본인이 작성한 글이 아닌경우 에러 처리를한다 (예외를 발생시킨다)
+		String id=(String)request.getSession().getAttribute("id");
+		//만일 로그인된 아이디와 글 작성자가 다르면
+		if(!id.equals(dto.getWriter())) {
+			throw new NotDeleteException("남의 글 지우기 없기!");
+		}
 		cafeDao.delete(num);
 	}
 

@@ -70,8 +70,8 @@ public class CafeController {
 	
 	//카페 자신이 쓴 글 삭제하기 요청 처리
 	@RequestMapping("/cafe/private/delete")
-	public String delete(@RequestParam int num) {
-		cafeService.deleteWriting(num);
+	public String delete(@RequestParam int num, HttpServletRequest request) {
+		cafeService.deleteWriting(num, request);
 		return "redirect:/cafe/list.do";
 	}
 	
