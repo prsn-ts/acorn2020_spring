@@ -17,4 +17,6 @@ public interface CafeService {
 	public void deleteWriting(int num, HttpServletRequest request);
 	//새로운 댓글을 저장하는 추상 메소드
 	public void saveComment(HttpServletRequest request); //댓글 저장
+	//자신의 댓글을 삭제하는 추상 메소드
+	public void deleteComment(HttpServletRequest request); //댓글 삭제
 }

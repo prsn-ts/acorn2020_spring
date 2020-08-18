@@ -15,4 +15,6 @@ public interface CafeCommentDao {
 	public int getSequence(); //insert하는 시점에 원글의 대한 댓글(대댓글아님)에 num 칼럼과, comment_group 칼럼에 동일한 값을 집어넣기위함.(생성한 시퀀스 값을 가져와서 쓴다.)
 	//댓글 수정
 	public void update(CafeCommentDto dto);
+	//댓글 하나의 정보를 리턴하는 메소드
+	public CafeCommentDto getData(int num);
 }
