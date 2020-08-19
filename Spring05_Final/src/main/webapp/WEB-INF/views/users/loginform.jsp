@@ -12,7 +12,7 @@
 	<h1>로그인 폼</h1>
 	<form action="login.do" method="post">
 		<%-- 원래 가려던 목적지 정보를 url 이라는 파라미터 명으로 가지고 간다 --%>
-		<input type="hidden" name="url" value="${url } " />
+		<input type="hidden" name="url" value="${url }" />
 		<div class="form-group">
 			<label for="id">아이디</label>
 			<input class="form-control" type="text" name="id" id="id" />
