@@ -14,7 +14,7 @@
 		border: 1px dotted #cecece;
 	}
 	/* 댓글 프로필 이미지를 작은 원형으로 만든다. */
-	#profileImage{
+	.profile-image{
 		width: 50px;
 		height: 50px;
 		border: 1px solid #cecece;
@@ -32,9 +32,7 @@
 	.comments dd{
 		margin-left: 50px;
 	}
-	.comment_form textarea, .comment_form button,
-		.comment-insert-form textarea, .comment-insert-form button,
-		.comment-update-form textarea, .comment-update-form button{
+	.comment-form textarea, .comment-form button{
 		float: left;
 	}
 	.comments li{
@@ -43,30 +41,28 @@
 	.comments ul li{
 		border-top: 1px solid #888;
 	}
-	.comment_form textarea, .comment-insert-form textarea,
-		.comment-update-form textarea{
+	.comment-form textarea{
 		width: 85%;
 		height: 100px;
 	}
-	.comment_form button, .comment-insert-form button,
-		.comment-update-form button{
+	.comment-form button{
 		width: 15%;
 		height: 100px;
 	}
-	/* 댓글에 댓글을 다는 폼은 일단 숨긴다. */
-	.comments form{
+	/* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
+	.comments .comment-form{
 		display: none;
 	}
-	
+	/* .reply_icon 을 li 요소를 기준으로 배치 하기 */
 	.comments li{
 		position: relative;
 	}
-	.comments .reply_icon{
+	.comments .reply-icon{
 		position: absolute;
 		top: 1em;
 		left: 1em;
 		color: red;
-	}	
+	}
 	pre {
 	  display: block;
 	  padding: 9.5px;
@@ -82,7 +78,17 @@
 	}
 	/* 글 내용중에 이미지가 있으면 최대 폭을 100%로 제한하기 */
 	.contents img{
-		max-image: 100%;
+		max-width: 100%;
+	}
+	/* 로딩중 이미지 css */
+	.loader{
+		position: fixed; /* 좌하단 고정된 위치에 배치 하기 위해 */
+		width: 100%;
+		left: 0;
+		bottom: 0;
+		text-align: center; /* 이미지를 좌우로 가운데  정렬 */
+		z-index: 1000;
+		display: none; /* 일단 숨겨 놓기 */
 	}
 </style>
 </head>
@@ -90,25 +96,26 @@
 <div class="container">
 	<c:if test="${not empty keyword }">
 		<p class="alert alert-info">
-			<strong>${keyword }</strong> 라는 키워드로 검색한 결과에 대한 자세히 보기 입니다.
+			<strong>${keyword }</strong> 라는 키워드로 검색한 결과에 대한 
+			자세히 보기 입니다.
 		</p>
 	</c:if>
 
 	<c:if test="${dto.prevNum ne 0 }">
-		<a class="btn btn-outline-info" href="detail.do?num=${dto.prevNum }&condition=${condition}&keyword=${encodedK}">
+		<a class="btn btn-outline-info btn-sm" href="detail.do?num=${dto.prevNum }&condition=${condition}&keyword=${encodedK}">
 			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  				<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+  					<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
 			</svg>
-			이전 글
-		</a>
+			이전글
+		</a>	
 	</c:if>
 	<c:if test="${dto.nextNum ne 0 }">
-		<a class="btn btn-outline-info" href="detail.do?num=${dto.nextNum }&condition=${condition}&keyword=${encodedK}">
+		<a class="btn btn-outline-info btn-sm" href="detail.do?num=${dto.nextNum }&condition=${condition}&keyword=${encodedK}">
 			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-	  			<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+  				<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
 			</svg>
-			다음 글
-		</a>
+			다음글
+		</a>	
 	</c:if>
 	<h1>글 상세 페이지</h1>
 	<table>
@@ -131,24 +138,21 @@
 	</table>
 	<div class="contents">${dto.content }</div>
 	<a href="list.do">목록 보기</a>
-	<%-- 
-		글 작성자와 로그인 된 아이디가 같을때만 기능을 제공해 준다. 
-		즉, 본인이 작성한 글만 수정할수 있도록 하기 위해
-	--%>
+	
 	<c:if test="${dto.writer eq id }">
-		<a href="private/updateform.do?num=${dto.num }&condition=${condition }&keyword=${encodedK }">
-			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-counterclockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" d="M12.83 6.706a5 5 0 0 0-7.103-3.16.5.5 0 1 1-.454-.892A6 6 0 1 1 2.545 5.5a.5.5 0 1 1 .91.417 5 5 0 1 0 9.375.789z"/>
-				<path fill-rule="evenodd" d="M7.854.146a.5.5 0 0 0-.708 0l-2.5 2.5a.5.5 0 0 0 0 .708l2.5 2.5a.5.5 0 1 0 .708-.708L5.707 3 7.854.854a.5.5 0 0 0 0-.708z"/>
+		<a class="btn btn-outline-warning btn-sm" href="private/updateform.do?num=${dto.num }">
+			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  				<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+  				<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
 			</svg>
 			수정
 		</a>
-		<a href="javascript:deleteWriting()">
+		<a class="btn btn-outline-danger btn-sm" href="javascript:deleteWriting();">
 			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   				<path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
 			</svg>
 			삭제
-		</a>
+		</a>			
 	</c:if>
 	
 	<!-- 댓글 목록 -->
@@ -163,34 +167,32 @@
 						<!-- 대댓글의 경우는 들여쓰기가 된 것처럼 보이도록 설정 -->
 						<!-- 특정 li요소를 찾아 수정(javascript로 조작)하기 위해 id 지정 -->
 						<li id="comment${tmp.num }" <c:if test="${tmp.num ne tmp.comment_group }">style="padding-left:50px;"</c:if>>
-							<c:if test="${tmp.num ne tmp.comment_group }">
-								<svg class="reply_icon" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-return-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-								  <path fill-rule="evenodd" d="M10.146 5.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 9l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
-								  <path fill-rule="evenodd" d="M3 2.5a.5.5 0 0 0-.5.5v4A2.5 2.5 0 0 0 5 9.5h8.5a.5.5 0 0 0 0-1H5A1.5 1.5 0 0 1 3.5 7V3a.5.5 0 0 0-.5-.5z"/>
-								</svg>
+							<c:if test="${tmp.num ne tmp.comment_group }"><svg class="reply-icon" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-return-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		  						<path fill-rule="evenodd" d="M10.146 5.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 9l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
+		  						<path fill-rule="evenodd" d="M3 2.5a.5.5 0 0 0-.5.5v4A2.5 2.5 0 0 0 5 9.5h8.5a.5.5 0 0 0 0-1H5A1.5 1.5 0 0 1 3.5 7V3a.5.5 0 0 0-.5-.5z"/></svg>
 							</c:if>
 							<dl>
 								<dt>
 									<c:choose>
 										<c:when test="${empty tmp.profile }"> <!-- empty 연산자는 null or "" 인지 판별할 때 쓴다. -->
-											<svg id="profileImage" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-												<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+											<svg class="profile-image"  width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+					  							<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 											</svg>
 										</c:when>
 										<c:otherwise>
-											<img id="profileImage" 
-												src="${pageContext.request.contextPath}${requestScope.dto.profile}"/>
+											<img class="profile-image" 
+												src="${pageContext.request.contextPath }${tmp.profile }"/>
 										</c:otherwise>
 									</c:choose>
 									<span>${tmp.writer }</span>
 									<c:if test="${tmp.num ne tmp.comment_group }">
-										@<strong>${tmp.target_id }</strong>
+										@<i>${tmp.target_id }</i>
 									</c:if>
 									<span>${tmp.regdate }</span>
-									<a href="javascript:" class="reply_link">답글</a>
+									<a data-num="${tmp.num }" href="javascript:" class="reply-link">답글</a>
 									<c:if test="${tmp.writer eq id }">
-										| <a href="javascript:" class="comment-update-link">수정</a>
-										| <a href="javascript:deleteComment(${tmp.num })">삭제</a>
+										| <a data-num="${tmp.num }" href="javascript:" class="comment-update-link">수정</a>
+										| <a data-num="${tmp.num }" href="javascript:" class="comment-delete-link">삭제</a>
 									</c:if>
 								</dt>
 								<dd>
@@ -198,103 +200,117 @@
 								</dd>
 							</dl>
 							<!-- 댓글의 댓글(대댓글) 작성 폼 -->
-							<form action="private/comment_insert.do" class="comment-insert-form"
-								method="post">
-								<input type="hidden" name="ref_group" 
+							<form class="comment-form re-insert-form" 
+								action="private/comment_insert.do" method="post">
+								<input type="hidden" name="ref_group"
 									value="${dto.num }"/>
-								<input type="hidden" name="target_id" 
+								<input type="hidden" name="target_id"
 									value="${tmp.writer }"/>
-								<input type="hidden" name="comment_group" 
+								<input type="hidden" name="comment_group"
 									value="${tmp.comment_group }"/>
 								<textarea name="content"></textarea>
 								<button type="submit">등록</button>
 							</form>
 							<!-- 로그인된 아이디와 댓글의 작성자가 같으면 수정 폼 출력 -->
 							<c:if test="${tmp.writer eq id }">
-								<form class="comment-update-form"
+								<form class="comment-form update-form" 
 									action="private/comment_update.do" method="post">
-									<input type="hidden" name="num" value="${tmp.num }" />
+									<input type="hidden" name="num" value="${tmp.num }"/>
 									<textarea name="content">${tmp.content }</textarea>
 									<button type="submit">수정</button>
 								</form>
 							</c:if>
-						</li>
+						</li>						
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 		</ul>
 	</div>
-	
-	<div class="comment_form">
-		<!-- 원글에 댓글을 작성하는 form -->
-		<form action="private/comment_insert.do" method="post">
-			<!-- 원글의 글번호가 ref_group 번호가 된다. -->
-			<input type="hidden" name="ref_group" value="${dto.num }" />
-			<!--  원글의 작성자가 댓글의 수신자가 된다. -->
-			<input type="hidden" name="target_id" value="${dto.writer }" />
-			<textarea name="content"><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
-			<button type="submit">등록</button>
-		</form>
-	</div>
+	<!-- 원글에 댓글을 작성하는 form -->
+	<form class="comment-form insert-form" action="private/comment_insert.do" method="post">
+		<!-- 원글의 글번호가 ref_group 번호가 된다. -->
+		<input type="hidden" name="ref_group" value="${dto.num }"/>
+		<!-- 원글의 작성자가 댓글의 수신자가 된다. -->
+		<input type="hidden" name="target_id" value="${dto.writer }"/>
+		<textarea name="content"><c:if test="${empty id }">로그인이 필요합니다</c:if></textarea>
+		<button type="submit">등록</button>
+	</form>
+</div>
+<div class="loader">
+	<img src="${pageContext.request.contextPath }/resources/images/ajax-loader.gif"/>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.5.1.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.form.min.js"></script>
 <script>
-	//댓글 수정 링크를 눌렀을 때 호출되는 함수 등록
-	$(".comment-update-link").on("click", function(){
-		$(this).parent().parent().parent()
-		.find(".comment-update-form")
+	//댓글 수정 링크를 눌렀을때 호출되는 함수 등록
+	$(document).on("click",".comment-update-link", function(){
+		/*
+			click 이벤트가 일어난 댓글 수정 링크에 저장된 data-num 속성의 값을
+			읽어와서 id 선택자를 구성한다.
+		*/
+		var selector="#comment"+$(this).attr("data-num");
+		//구성된 id 선택자를 이용해서 원하는 li 요소에서 .update-form 을 찾아서 동작하기
+		$(selector)
+		.find(".update-form")
 		.slideToggle();
 	});
-	//로딩한 jquery.form.min.js jquery 플러그인의 기능을 이용해서 댓글 수정폼을
-	//ajax 요청을 통해 전송하고 응답받기
-	$(".comment-update-form").ajaxForm(function(data){
-		console.log(data); //서버에서 응답한 데이터 보기
-		//수정이 일어난 댓글의 요소를 선택해서 원하는 작업(수정완료 후 수정폼을 숨기기위한 작업)을 한다.
-		var selector = "#comment"+data.num; //"#comment6" 형식의 선택자 구성
-		
-		//댓글 수정 폼을 안보이게 한다.
-		$(selector).find(".comment-update-form").slideUp();
-		//pre 요소에 출력된 내용 수정하기
-		$(selector).find("pre").text(data.content);
+	//새로 동적으로 생기는 폼들은 ajaxForm()이 먹히지 않는다 따라서 폼이 제출될 때 ajax로 처리하기위해서는 ajaxSubmit() 함수를 이용해야한다고 한다.
+	$(document).on("submit", ".update-form", function(){
+		//이벤트가 일어난 폼을 ajax로 전송되도록 하고 
+		$(this).ajaxSubmit(function(data){
+			//console.log(data);
+			//수정이 일어난 댓글의 li 요소를 선택해서 원하는 작업(수정완료 후 수정폼을 숨기기위한 작업)을 한다.
+			var selector="#comment"+data.num; //"#comment6" 형식의 선택자 구성
+			
+			//댓글 수정 폼을 안보이게 한다. 
+			$(selector).find(".update-form").slideUp();
+			//pre 요소에 출력된 내용 수정하기
+			$(selector).find("pre").text(data.content);
+		});
+		//폼 전송을 막아준다.
+		return false;
 	});
-
-	//댓글 삭제하는 함수
-	function deleteComment(num){
+	
+	$(document).on("click", ".comment-delete-link", function(){
+		//삭제할 글번호 
+		var num=$(this).attr("data-num");
 		var isDelete=confirm("댓글을 삭제 하시겠습니까?");
 		if(isDelete){
-			location.href="${pageContext.request.contextPath}"+
+			location.href="${pageContext.request.contextPath }"+
 			"/cafe/private/comment_delete.do?num="+num+"&ref_group=${dto.num}";
 		}
-	}
-
-	//답글 달기 링크를 클릭했을 때 실행할 함수 등록
-	$(".reply_link").on("click", function(){
+	})
+	
+	//답글 달기 링크를 클릭했을때 실행할 함수 등록
+	$(document).on("click", ".reply-link", function(){
 		//로그인 여부
-		var isLogin = ${not empty id};
+		var isLogin=${not empty id};
 		if(isLogin == false){
-			alert('로그인 페이지로 이동합니다')
-			location.href="${pageContext.request.contextPath}/users/loginform.do?"+
-					"url=${pageContext.request.contextPath}/cafe/detail.do?num=${dto.num}";
+			alert("로그인 페이지로 이동합니다.")
+			location.href="${pageContext.request.contextPath }/users/loginform.do?"+
+					"url=${pageContext.request.contextPath }/cafe/detail.do?num=${dto.num}";
 		}
 		
-		$(this).parent().parent().parent().find(".comment-insert-form")
+		var selector="#comment"+$(this).attr("data-num");
+		$(selector)
+		.find(".re-insert-form")
 		.slideToggle();
-		if($(this).text()=="답글"){ //링크 text를 답글일 때 클릭하면
-			$(this).text("취소"); //취소로 바꾸고
-		}else{ //취소일 때 클릭하면
-			$(this).text("답글"); //답글로 바꾼다.
+		
+		if($(this).text()=="답글"){//링크 text를 답글일때 클릭하면 
+			$(this).text("취소");//취소로 바꾸고 
+		}else{//취소일때 크릭하면 
+			$(this).text("답글");//답들로 바꾼다.
 		}
 	});
-
-	$(".comment_form form").on("submit", function(){
+	//새로 동적으로 생기는 폼들은 ajaxForm()이 먹히지 않는다 따라서 폼이 제출될 때 ajax로 처리하기위해서는 ajaxSubmit() 함수를 이용해야한다고 한다.
+	$(document).on("submit",".insert-form", function(){
 		//로그인 여부
-		var isLogin = ${not empty id};
+		var isLogin=${not empty id};
 		if(isLogin == false){
-			alert('로그인 페이지로 이동합니다')
-			location.href="${pageContext.request.contextPath}/users/loginform.do?"+
-					"url=${pageContext.request.contextPath}/cafe/detail.do?num=${dto.num}";
-			return false; //폼 전송 막기
+			alert("로그인 페이지로 이동합니다.")
+			location.href="${pageContext.request.contextPath }/users/loginform.do?"+
+					"url=${pageContext.request.contextPath }/cafe/detail.do?num=${dto.num}";
+			return false; //폼 전송 막기 		
 		}
 	});
 
@@ -302,6 +318,46 @@
 		alert("정말로 삭제하시겠습니까?");
 		location.href="private/delete.do?num=${dto.num }";
 	}
+	
+
+	//페이지가 처음 로딩될때 1page 를 보여준다고 가정
+	var currentPage = 1;
+	//전체 페이지 수를 javascript 변수에 담아준다.
+	var totalPageCount = ${totalPageCount};
+	//ajax 요청이 응답 되었는지 여부(밑에 scrollTop+windowHeight + 10이 구문으로 인해 요청이 두번 들어갈 수도 있기 때문에)
+	
+	//웹브라우저에 scroll 이벤트가 일어 났을 때 실행할 함수 등록
+	$(window).on("scroll", function(){
+		if(currentPage == totalPageCount){//만일 마지막 페이지 이면
+			return; //함수를 여기서 종료한다.
+		}
+		//위쪽으로 스크롤된 길이 구하기
+		var scrollTop = $(window).scrollTop();
+		//window 의 높이
+		var windowHeight = $(window).height();
+		//document(문서)의 높이
+		var documentHeight = $(document).height();
+		//바닥까지 스크롤 되었는지 여부
+		//바닥으로 스크롤을 다 내렸는지 인식을 못하는 경우가 있어서 +10의 여유를 줘서 documentHeight보다 값이 크게해 인식되도록 처리.
+		var isBottom = scrollTop+windowHeight + 10 >= documentHeight;
+		if(isBottom){//만일 바닥까지 스크롤 했다면...
+			//로딩중 이미지 띄우기
+			$(".loader").show();
+			currentPage++; //페이지를 1 증가 시키고
+			//해당 페이지의 내용을 ajax 요청을 해서 받아온다.
+			$.ajax({
+				url:"ajax_comment_list.do",
+				method:"get",
+				data:{pageNum:currentPage, ref_group:${dto.num}},
+				success:function(data){
+					//data 가 html 마크업 형태의 문자열로 넘어오면 밑에 추가될 수 있도록 처리(append() 함수 이용)
+					$(".container ul").append(data);
+					//마크업 출력이 끝난 후 로딩중 이미지를 숨긴다.
+					$(".loader").hide();
+				}
+			});
+		}
+	});
 </script>
 </body>
 </html>

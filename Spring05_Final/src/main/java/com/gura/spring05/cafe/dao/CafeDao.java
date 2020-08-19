@@ -21,4 +21,6 @@ public interface CafeDao {
 	public boolean delete(int num);
 	//글 수정
 	public void update(CafeDto dto);
+	//전체 댓글의 개수를 가져오는 메소드
+	public int getCount(int ref_group);
 }

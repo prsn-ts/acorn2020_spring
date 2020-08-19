@@ -61,4 +61,10 @@ public class CafeDaoImpl implements CafeDao{
 	public CafeDto getData(CafeDto dto) {
 		return session.selectOne("cafe.getData2", dto);
 	}
+	//전체 댓글의 개수를 가져오는 메소드
+	@Override
+	public int getCount(int ref_group) {
+		
+		return session.selectOne("cafeComment.getCount", ref_group);
+	}
 }

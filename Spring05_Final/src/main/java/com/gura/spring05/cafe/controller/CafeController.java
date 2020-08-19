@@ -80,7 +80,7 @@ public class CafeController {
 		return "redirect:/cafe/list.do";
 	}
 	
-	//원글의 댓글 추가하기 요청 처리
+	//원글의 댓글 and 댓글의 댓글 추가하기 요청 처리
 	@RequestMapping(value = "/cafe/private/comment_insert",
 			method=RequestMethod.POST)
 	public ModelAndView commentInsert(HttpServletRequest request,
@@ -110,5 +110,12 @@ public class CafeController {
 		map.put("num", dto.getNum());
 		map.put("content", dto.getContent());
 		return map;
+	}
+	
+	//추가 댓글 요청 처리
+	@RequestMapping(value = "/cafe/ajax_comment_list.do", method=RequestMethod.GET)
+	public String ajaxCommentList(HttpServletRequest request) {
+		cafeService.moreCommentList(request);
+		return "cafe/ajax_comment_list";
 	}
 }
