@@ -161,7 +161,8 @@
 					</c:when>
 					<c:otherwise>
 						<!-- 대댓글의 경우는 들여쓰기가 된 것처럼 보이도록 설정 -->
-						<li <c:if test="${tmp.num ne tmp.comment_group }">style="padding-left:50px;"</c:if>>
+						<!-- 특정 li요소를 찾아 수정(javascript로 조작)하기 위해 id 지정 -->
+						<li id="comment${tmp.num }" <c:if test="${tmp.num ne tmp.comment_group }">style="padding-left:50px;"</c:if>>
 							<c:if test="${tmp.num ne tmp.comment_group }">
 								<svg class="reply_icon" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-return-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 								  <path fill-rule="evenodd" d="M10.146 5.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 9l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
@@ -249,6 +250,13 @@
 	//ajax 요청을 통해 전송하고 응답받기
 	$(".comment-update-form").ajaxForm(function(data){
 		console.log(data); //서버에서 응답한 데이터 보기
+		//수정이 일어난 댓글의 요소를 선택해서 원하는 작업(수정완료 후 수정폼을 숨기기위한 작업)을 한다.
+		var selector = "#comment"+data.num; //"#comment6" 형식의 선택자 구성
+		
+		//댓글 수정 폼을 안보이게 한다.
+		$(selector).find(".comment-update-form").slideUp();
+		//pre 요소에 출력된 내용 수정하기
+		$(selector).find("pre").text(data.content);
 	});
 
 	//댓글 삭제하는 함수
