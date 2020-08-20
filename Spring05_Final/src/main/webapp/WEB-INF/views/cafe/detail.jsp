@@ -165,6 +165,8 @@
 		<textarea name="content"><c:if test="${empty id }">로그인이 필요합니다</c:if></textarea>
 		<button type="submit">등록</button>
 	</form>
+	<!-- 위에 float:left 에 영향을 받지 않게 하기 위해 -->
+	<div class="clearfix"></div>
 	
 	<!-- 댓글 목록 -->
 	<div class="comments">
@@ -236,8 +238,28 @@
 				</c:choose>
 			</c:forEach>
 		</ul>
+	</div><!-- /.comments -->
+	<div class="page-display">
+		<ul class="pagination pagination-sm">
+		<c:if test="${startPageNum ne 1 }">
+			<li class="page-item"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${startPageNum-1 }">Prev</a></li>
+		</c:if>
+		<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }">
+			<c:choose>
+				<c:when test="${i eq pageNum }">
+					<li class="page-item active"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${i }">${i }</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${i }">${i }</a></li>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		<c:if test="${endPageNum lt totalPageCount }">
+			<li class="page-item"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${endPageNum+1 }">Next</a></li>
+		</c:if>
+		</ul>	
 	</div>
-</div>
+</div><!-- /.container -->
 <div class="loader">
 	<img src="${pageContext.request.contextPath }/resources/images/ajax-loader.gif"/>
 </div>
@@ -321,77 +343,6 @@
 		location.href="private/delete.do?num=${dto.num }";
 	}
 	
-
-	//페이지가 처음 로딩될때 1page 를 보여준다고 가정
-	var currentPage = 1;
-	//전체 페이지 수를 javascript 변수에 담아준다.
-	var totalPageCount = ${totalPageCount};
-	//ajax 요청이 응답 되었는지 여부(밑에 scrollTop+windowHeight + 10이 구문으로 인해 요청이 두번 들어갈 수도 있기 때문에)
-	
-	/*
-		1.페이지 로딩 시점에 document 의 높이가 window 의 실제 높이 보다 작고
-		2.전체 페이지의 개수가(totalPageCount) 현재페이지(currentPage)보다 크면 
-		1,2번을 모두 만족할 때 추가로 댓글을 받아오는 ajax 요청을 해야한다.
-	*/
-	/* 페이지 로딩 시점에 document 의 높이가 window 의 실제 높이 보다 작은 경우일 때 아래의 코드를 수행하면
-		documentHeight와 windowHeight의 값이 같게 나오는 기술적인 오류가 있다고한다. 그래서 이 방법은 제외시킨다.
-	var documentHeight = $(document).height();
-	var windowHeight = $(window).height();
-	*/
-	
-	var dH = $(document).height(); //문서의 높이
-	var wH = window.screen.height; //window 의 높이
-	//문서의 높이가 window의 높이보다 작고 and 전체 댓글 페이지 수가 현재 댓글 페이지수보다 크다면
-	if(dH < wH && totalPageCount > currentPage){
-		//로딩중 이미지 띄우기
-		$(".loader").show();
-		currentPage++; //페이지를 1 증가 시키고
-		//해당 페이지의 내용을 ajax 요청을 해서 받아온다.
-		$.ajax({
-			url:"ajax_comment_list.do",
-			method:"get",
-			data:{pageNum:currentPage, ref_group:${dto.num}},
-			success:function(data){
-				//data 가 html 마크업 형태의 문자열로 넘어오면 밑에 추가될 수 있도록 처리(append() 함수 이용)
-				$(".container ul").append(data);
-				//마크업 출력이 끝난 후 로딩중 이미지를 숨긴다.
-				$(".loader").hide();
-			}
-		});
-	}
-	
-	//웹브라우저에 scroll 이벤트가 일어 났을 때 실행할 함수 등록
-	$(window).on("scroll", function(){
-		if(currentPage == totalPageCount){//만일 마지막 페이지 이면
-			return; //함수를 여기서 종료한다.
-		}
-		//위쪽으로 스크롤된 길이 구하기
-		var scrollTop = $(window).scrollTop();
-		//window 의 높이
-		var windowHeight = $(window).height();
-		//document(문서)의 높이
-		var documentHeight = $(document).height();
-		//바닥까지 스크롤 되었는지 여부
-		//바닥으로 스크롤을 다 내렸는지 인식을 못하는 경우가 있어서 +10의 여유를 줘서 documentHeight보다 값이 크게해 인식되도록 처리.
-		var isBottom = scrollTop+windowHeight + 10 >= documentHeight;
-		if(isBottom){//만일 바닥까지 스크롤 했다면...
-			//로딩중 이미지 띄우기
-			$(".loader").show();
-			currentPage++; //페이지를 1 증가 시키고
-			//해당 페이지의 내용을 ajax 요청을 해서 받아온다.
-			$.ajax({
-				url:"ajax_comment_list.do",
-				method:"get",
-				data:{pageNum:currentPage, ref_group:${dto.num}},
-				success:function(data){
-					//data 가 html 마크업 형태의 문자열로 넘어오면 밑에 추가될 수 있도록 처리(append() 함수 이용)
-					$(".container ul").append(data);
-					//마크업 출력이 끝난 후 로딩중 이미지를 숨긴다.
-					$(".loader").hide();
-				}
-			});
-		}
-	});
 </script>
 </body>
 </html>
