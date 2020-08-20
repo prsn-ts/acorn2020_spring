@@ -199,7 +199,7 @@ public class CafeServiceImpl implements CafeService{
 		CafeCommentDto commentDto=new CafeCommentDto();
 		commentDto.setStartRowNum(startRowNum);
 		commentDto.setEndRowNum(endRowNum);
-		//ref_group 번호도 담는다.(놓쳤던 부분, 한글에다가 댓글들을 나타내기위해서 글 번호도 dto에 저장한다.)
+		//ref_group 번호도 담는다.(놓쳤던 부분, 하나의 글에다가 댓글들을 나타내기위해서 글 번호도 dto에 저장한다.)
 		commentDto.setRef_group(num);
 		
 		//원글의 글번호를 이용해서 댓글 목록을 얻어온다.

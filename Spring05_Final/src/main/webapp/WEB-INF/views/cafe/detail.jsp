@@ -282,7 +282,7 @@
 	$(document).on("submit", ".update-form", function(){
 		//이벤트가 일어난 폼을 ajax로 전송되도록 하고 
 		$(this).ajaxSubmit(function(data){
-			//console.log(data);
+			console.log(data); //결과 확인용
 			//수정이 일어난 댓글의 li 요소를 선택해서 원하는 작업(수정완료 후 수정폼을 숨기기위한 작업)을 한다.
 			var selector="#comment"+data.num; //"#comment6" 형식의 선택자 구성
 			
@@ -322,8 +322,8 @@
 		
 		if($(this).text()=="답글"){//링크 text를 답글일때 클릭하면 
 			$(this).text("취소");//취소로 바꾸고 
-		}else{//취소일때 크릭하면 
-			$(this).text("답글");//답들로 바꾼다.
+		}else{//취소일때 클릭하면 
+			$(this).text("답글");//답글로 바꾼다.
 		}
 	});
 	//새로 동적으로 생기는 폼들은 ajaxForm()이 먹히지 않는다 따라서 폼이 제출될 때 ajax로 처리하기위해서는 ajaxSubmit() 함수를 이용해야한다고 한다.
@@ -342,7 +342,6 @@
 		alert("정말로 삭제하시겠습니까?");
 		location.href="private/delete.do?num=${dto.num }";
 	}
-	
 </script>
 </body>
 </html>
