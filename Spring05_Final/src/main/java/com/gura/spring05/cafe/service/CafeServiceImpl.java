@@ -172,8 +172,11 @@ public class CafeServiceImpl implements CafeService{
 		
 		//보여줄 페이지의 번호(만일 pageNum이 넘어오지 않으면 가장 마지막 페이지)
 		String strPageNum = request.getParameter("pageNum");
-		int pageNum=totalPageCount; //pageNum(보여줄 페이지 번호)이 넘어오지 않으면 가장 마지막 페이지(totalPageCount)를 보여준다. 
+		//일단 마지막 페이지의 댓글 목록을 보여주기로하고
+		int pageNum=totalPageCount; //pageNum(보여줄 페이지 번호)이 넘어오지 않으면 가장 마지막 페이지(totalPageCount)를 보여준다.
+		//만일 페이지 번호가 넘어온다면
 		if(strPageNum!=null) {
+			//넘어온 페이지에 해당하는 댓글 목록을 보여주도록 한다.
 			pageNum=Integer.parseInt(strPageNum);
 		}
 		
