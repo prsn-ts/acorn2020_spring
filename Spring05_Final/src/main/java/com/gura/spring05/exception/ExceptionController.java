@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice //Exception Controller가 bean이 되기 위해서 필요한 @ControllerAdvice 어노테이션을 붙이고 Component-scan에 의해 bean 이 된다.
 public class ExceptionController {
 	
-	//spring framework 가 동작하는 중에 NootDeleteException type 의
+	//spring framework 가 동작하는 중에 NotDeleteException type 의
 	//예외가 발생하면 호출되는 메소드
 	@ExceptionHandler(NotDeleteException.class)
 	public ModelAndView notDelete(NotDeleteException nde) {
