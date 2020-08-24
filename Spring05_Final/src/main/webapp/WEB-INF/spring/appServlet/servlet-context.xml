@@ -4,10 +4,12 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	
 	<!-- 
 		spring bean container에서 관리되는 객체를 정의하는 문서로 상당히 중요한 xml 문서
@@ -28,7 +30,7 @@
 		<beans:property name="jndiName" value="java:comp/env/jdbc/myoracle"/>
 	</beans:bean>
 	<!-- 
-		위는 아래의 코드와 같다
+		위는 아래의 코드와 같다. dataSource는 DB 관리를 위한 커넥션 객체와 같다.
 		dataSource = new JndiObjectFactoryBean();
 		dataSource.setJndiName("java:comp/env/jdbc/myoracle");
 	 -->
@@ -71,6 +73,19 @@
 		위에 beans:bean에 해당하는 코드와 아래 코드는 동일한 의미.
 		new SqlSessionTemplate(sessionFactory);
 	 -->
+	 
+	<!-- Spring Transaction Manager 설정 -->
+	<beans:bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+	</beans:bean>
+	
+	<!-- 위 문장은 아래의 소스코드의 의미랑 같다.
+		txManager = new DataSourceTransactionManager();
+		txManager.setDataSource(dataSource);
+	-->
+	
+	<!-- @Transactional 어노테이션으로 트랜잭션을 관리할 수 있도록 설정 -->
+	<tx:annotation-driven transaction-manager="txManager"/>
 	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
