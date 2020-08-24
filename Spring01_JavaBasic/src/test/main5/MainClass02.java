@@ -13,6 +13,8 @@ public class MainClass02 {
 		Messenger m = context.getBean(Messenger.class);
 		// bean 의 메소드 사용해보기
 		m.sendGreeting("good afternoon!");
+		m.sendGreeting("좋은 아침!");
+		m.sendGreeting("바보야 좋은 아침!");
 		String msg = m.getMessage();
 		// bean 이 리턴한 데이터 확인해 보기
 		System.out.println("Messenger 객체가 리턴한 msg : "+msg);
