@@ -16,7 +16,7 @@ public class MessengerAspect {
 		//aop 가 적용된 메소드 수행하기 이전에 해야할 작업
 		//메소드에 전달된 인자들 목록을 얻어내기
 		Object[] args = joinPoint.getArgs(); //aop가 적용된 메소드의 인자들의 값들(여러개)을 배열로 담기위한 getArgs() 메소드
-		for(Object tmp:args) { //aop가 적용된 메소드의 인자값이 순서대로 args Object[]배열에 저장되리란 보장이 없기 때문에 원하는 데이터 type을 찾아서 작업을 진행해야한다.
+		for(Object tmp:args) { //aop가 적용된 여러 메소드의 인자값은 어떤 일련의 순서대로 args Object[]배열에 저장되리란 보장이 없기 때문에 원하는 데이터 type을 찾아서 작업을 진행해야한다.
 			//만일 인자가 String type 이면
 			if(tmp instanceof String) { //tmp에 들어있는 데이터 타입이 String일 경우 "tmp instanceof String" 이 구문의 결과값이 true로 바뀐다.
 				//원래 type 으로 casting
