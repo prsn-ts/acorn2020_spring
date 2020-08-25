@@ -34,6 +34,6 @@
 	<insert id="addOrder" parameterType="orderDto">
 		INSERT INTO client_order
 		(num, id, code, addr)
-		VALUES(client_order_seq.NEXTVAL, #{id} #{code}, #{addr})
+		VALUES(client_order_seq.NEXTVAL, #{id}, #{code}, #{addr})
 	</insert>
 </mapper>
