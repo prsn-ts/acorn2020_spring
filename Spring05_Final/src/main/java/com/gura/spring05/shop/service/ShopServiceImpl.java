@@ -1,5 +1,7 @@
 package com.gura.spring05.shop.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gura.spring05.shop.dao.OrderDao;
 import com.gura.spring05.shop.dao.ShopDao;
+import com.gura.spring05.shop.dto.OrderDto;
+import com.gura.spring05.shop.dto.ShopDto;
 
 @Service
 public class ShopServiceImpl implements ShopService{
@@ -19,8 +23,10 @@ public class ShopServiceImpl implements ShopService{
 	
 	@Override
 	public void getList(ModelAndView mView) {
-		// TODO Auto-generated method stub
-		
+		//상품 목록
+		List<ShopDto> list = shopDao.getList();
+		//ModelAndView 객체에 list 라는 키값으로 담는다.
+		mView.addObject("list", list);
 	}
 	/*
 	 *  - Spring 트랜잭션 설정 방법
@@ -41,22 +47,31 @@ public class ShopServiceImpl implements ShopService{
 	 *  예외를 발생시킬 조건이라면 위와 같이 예외를 발생시켜서
 	 *  트랜잭션이 관리 되도록 한다.
 	 */
-	@Transactional //어느하나 빠짐없이 로직 수행을 해야하는데 exception이 발생해서 모두 취소해야한다면 트랜잭션 어노테이션을 붙인다.
+	@Transactional //어느하나 빠짐없이 성공적으로 로직 수행을 해야하는데 중간에 의도치 않은 exception이 발생해서 모두 취소해야한다면 트랜잭션 어노테이션을 붙인다.
 	@Override
 	public void buy(HttpServletRequest request, ModelAndView mView) {
-		//1. 구입할 상품의 번호를 읽어온다.
-		
+		//구입자의 아이디(누가)
+		String id = (String)request.getSession().getAttribute("id");
+		//1. 파라미터로 전달되는 구입할 상품 번호(어떤 상품을 구입할 것인지)
+		int num = Integer.parseInt(request.getParameter("num"));
 		//2. 상품의 가격을 얻어온다.
-		
+		int price = shopDao.getPrice(num);
 		//3,4,5,6번의 작업을 트랜잭션으로 묶어야한다.(도중에 실패하면 다시 처음부터 시작해야한다)
 		//3. 상품의 가격만큼 계좌 잔액을 줄인다.
-		
+		ShopDto dto = new ShopDto();
+		dto.setId(id);
+		dto.setPrice(price);
+		shopDao.minusMoney(dto);
 		//4. 가격의 10%를 포인트로 적립한다.
-		
+		shopDao.plusPoint(dto);
 		//5. 재고의 개수를 1 줄인다.
-		
+		shopDao.minusCount(num);
 		//6. 주문 테이블(배송) 에 정보를 추가한다.
-		
+		OrderDto dto2 = new OrderDto();
+		dto2.setId(id); //누가
+		dto2.setCode(num); //어떤 상품을
+		dto2.setAddr("강남구 삼원빌딩 5층"); //어디로 배송할 지
+		orderDao.addOrder(dto2);
 	}
 
 }
