@@ -8,8 +8,8 @@
 	</select>
 	<!-- 
 		remainCount 칼럼의 check 제약조건 때문에 Exception이 발생할 수 있으며
-		@Repository 라는 어노테이션이 붙은 Dao에서 Exception 발생 시 종류는 SqlException인데
-		spring에서는 이 SqlException를 DataAccessException 으로 바꾼다. -> 트랜잭션 처리를 하기 위함.
+		보통 일반적으로 Dao에서 Exception 발생 시 종류는 SqlException인데 @Repository 라는 어노테이션이 붙은 dao에서
+		spring은 이 SqlException를 DataAccessException 으로 바꾼다. -> 트랜잭션 처리를 하기 위함.
 	 -->
 	<update id="minusCount" parameterType="int">
 		UPDATE shop
@@ -34,6 +34,6 @@
 	<insert id="addOrder" parameterType="orderDto">
 		INSERT INTO client_order
 		(num, id, code, addr)
-		VALUES(client_order_seq.NEXTVAL, #{id} #{code}, #{addr})
+		VALUES(client_order_seq.NEXTVAL, #{id}, #{code}, #{addr})
 	</insert>
 </mapper>
