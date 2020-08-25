@@ -26,6 +26,22 @@ public class ExceptionController {
 	/*	@Repository 어노테이션이 붙은
 	 *  Dao 에서 DB 관련 작업을 하다가 예외가 발생하면 실행순서가 여기로 들어온다.
 	 */
+	
+	/*
+	 *  NoDeliveryException 클래스는 DataAccessException를 상속받아서 DataAccessException 타입이기도 하나
+	 *  이렇게 좀더 세부적인 처리를 위해서 따로 컨트롤러에 특정 클래스를 지정해서 예외 처리 요청을 설정할 수 있다.
+	 *  ※ 주의! 
+	 *  -> NoDeliveryException의 클래스의 세부적인 예외 처리 요청은 DataAccessException 예외 처리 요청보다
+	 *     위(상단)에 있어야한다.
+	 */
+	@ExceptionHandler(NoDeliveryException.class)
+	public ModelAndView noDelivery(NoDeliveryException nde) {
+		ModelAndView mView = new ModelAndView();
+		mView.addObject("exception", nde);
+		mView.setViewName("error/no_delivery");
+		return mView;
+	}
+	
 	@ExceptionHandler(DataAccessException.class)
 	public ModelAndView dataAccess(DataAccessException dae) {
 		ModelAndView mView = new ModelAndView();
