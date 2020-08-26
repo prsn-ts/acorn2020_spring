@@ -11,7 +11,7 @@
 <script>
 	// "myApp" 이라는 이름의 모듈 만들기
 	var myApp = angular.module("myApp", []);
-	// 모듈을 이용해서 myCtrl 이라는 이름의 컨트롤러 만들기(특정 div에 지정된 이름(myCtrl)의 컨트롤러에 속해있는 공간을 myCtrl로 제어하겠다는 의미)
+	// 모듈을 이용해서 myCtrl 이라는 이름의 컨트롤러 만들기(특정 div에 지정된 이름(ng-controller="myCtrl")의 컨트롤러에 속해있는 공간을 myCtrl 컨트롤러로 제어하겠다는 의미)
 	myApp.controller("myCtrl", function($scope){
 		/*
 		- 이 함수는 페이지가 로딩되는 시점에 최초 한번 호출된다.
@@ -21,20 +21,20 @@
 		- ng-model="" 이렇게 생성한 저장공간은 사실은 scope영역에서 만들어 낸다.
 		*/
 		console.log("myCtrl 에 있는 함수 호출됨");
-		console.log($scope);
+		console.log($scope); //scope 객체보기
 		//페이지 로딩 시점에 $scope object 에 nick 이라는 방(모델)을 만들고 문자열 저장하기
 		$scope.nick="김구라";
-		//페이지 로딩 시점에 $scope object 에 nick 이라는 방(모델)을 만들고 함수 정의(저장)하기
+		//페이지 로딩 시점에 $scope object 에 함수 정의(저장)하기(나중에 호출될 때 사용하기 위함)
 		$scope.btnClicked=function(){
 			alert("버튼을 눌렀네요?!");
 		}
 	});
-	// 모듈을 이용해서 yourCtrl 이라는 이름의 컨트롤러 만들기(특정 div에 지정된 이름(yourCtrl)의 컨트롤러에 속해있는 공간을 yourCtrl로 제어하겠다는 의미)
+	// 모듈을 이용해서 yourCtrl 이라는 이름의 컨트롤러 만들기(특정 div에 지정된 이름(ng-controller="yourCtrl")의 컨트롤러에 속해있는 공간을 yourCtrl 컨트롤러로 제어하겠다는 의미)
 	myApp.controller("yourCtrl", function($scope){
 		console.log("yourCtrl 에 있는 함수 호출됨");
-		console.log($scope);
+		console.log($scope); //scope 객체보기
 		$scope.nick="해골";
-		//페이지 로딩 시점에 $scope object 에 nick 이라는 방(모델)을 만들고 함수 정의(저장)하기
+		//페이지 로딩 시점에 $scope object 에 함수 정의(저장)하기
 		$scope.onMouseover=function(){
 			alert("마우스 올렸구나?");
 		}
