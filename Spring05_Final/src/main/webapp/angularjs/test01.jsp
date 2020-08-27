@@ -23,6 +23,7 @@
  	"검사"를 통해 클라이언트 사이드(angularjs 문법)이 해석된 결과가 보인다.
  	정리하면, 서버 사이드(jsp 페이지)에서 해석된 결과는 "페이지 소스보기"로 확인가능/ 클라이언트 사이드(angularjs 문법)에서 해석된 결과는 "검사"로 확인가능.
   -->
+<!-- ng-app 지시어를 쓰면 따로 지정되지 않은 기본 모듈, 기본 컨트롤러를 쓰는 것. -->
 <body ng-app>
 <h1>hello angular js!</h1>
 <input ng-model="msg" type="text" placeholder="메세지 입력..." />

@@ -48,7 +48,7 @@
 	<p> 입력한 닉네임 : <strong>{{nick}}</strong></p>
 	<p> 닉네임 유효한지 여부 : <strong>{{myForm.nick.$valid}}</strong></p>
 	<p> 닉네임 유효하지 않은 지 여부 : <strong>{{myForm.nick.$invalid}}</strong></p>
-	<!-- 해당 페이지가 처음 로딩되고 아이디가 한번이라도 입력을 했는 지(dirty) 안했는지(pristine) 여부  -->
+	<!-- 해당 페이지가 처음 로딩되고 닉네임이 한번이라도 입력을 했는 지(dirty) 안했는지(pristine) 여부  -->
 	<p> 닉네임이 청결(순결) 한지 여부 : <strong>{{myForm.nick.$pristine}}</strong></p>
 	<p> 닉네임이 더렵혀졌는 지 여부 : <strong>{{myForm.nick.$dirty}}</strong></p>
 	

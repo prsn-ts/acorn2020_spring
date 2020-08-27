@@ -10,6 +10,7 @@
 <script src="../resources/js/angular.min.js"></script>
 <script>
 	// "myApp" 이라는 이름의 모듈 만들기
+	// 추가적을 자바스크립트를 로딩해서 사용하려고할 때 angular.module()의 대괄호 []안에다가 명시한다.
 	var myApp = angular.module("myApp", []);
 	// 모듈을 이용해서 myCtrl 이라는 이름의 컨트롤러 만들기(특정 div에 지정된 이름(ng-controller="myCtrl")의 컨트롤러에 속해있는 공간을 myCtrl 컨트롤러로 제어하겠다는 의미)
 	myApp.controller("myCtrl", function($scope){
@@ -44,6 +45,7 @@
 <body ng-app="myApp">
 	<div ng-controller="myCtrl">
 		<h3>myCtrl 컨트롤러가 관리하는 영역</h3>
+		<!-- ng-click="nick='개구라'" 이런 식으로 nick의 모델의 값을 바꾸면 모델을 사용하는 view 부분({{nick}})이 자동으로 반영되어서 표현된다. -->
 		<p>별명 : <strong>{{nick}}</strong></p>
 		<!-- $scope.nick='개구라'; 이거랑 같은 뜻 -->
 		<button ng-click="nick='개구라'">눌러봐!</button>
@@ -51,7 +53,8 @@
 		<button ng-click="btnClicked()">눌러봐!</button>
 	</div>
 	<div ng-controller="yourCtrl">
-		<h3>yourCtrl 컨트롤러가 관리하는 영역</h3>
+		<!-- ng-init="nick='해골'"는 $scope.nick="해골";와 같은 의미이다. -->
+		<h3 ng-init="nick='해골'">yourCtrl 컨트롤러가 관리하는 영역</h3>
 		<p>별명 : <strong ng-bind="nick"></strong></p>
 		<button ng-click="nick='피해골'">눌러봐!</button>
 		<!-- 다양한 이벤트 처리 가능(ng-mouseout, ng-focus, ng-blur, ng-change, ng-input, ng-mouseover 등) -->

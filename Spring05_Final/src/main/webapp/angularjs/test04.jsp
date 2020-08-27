@@ -17,6 +17,10 @@
 	<!-- novalidate 는 웹브라우저가 기본으로 갖고있는 자체 유효성 검증을 하지 못하도록 하는 설정(유효성 검증을 개발자가 직접 관리하겠다는 의미) -->
 	<form name="myForm" action="insert.jsp" method="post" novalidate>
 		<!-- 입력한 문자열을 id 라는 모델명으로 관리, 반드시 입력해야 한다. -->
+		<!-- 
+			한 글자 이상 입력했는지 여부를 체크하는 ng-required 속성.
+			한 글자 이상 입력해있어야 ng-required가 true가 나온다.(한 글자도 입력하지 않으면 ng-required의 속성 값은 false가 나온다.) 
+		-->
 		<input type="text" name="id" ng-model="id" ng-required="true" />
 		<!-- 해당 페이지가 처음 로딩됐을 때는 안나오다가 아이디에 한번이라도 입력을 했고 유효하지 않은 값(dirty)일 때 표출 -->
 		<p ng-show="myForm.id.$invalid && myForm.id.$dirty" style="color:red;">아이디는 반드시 입력 해라!</p>
