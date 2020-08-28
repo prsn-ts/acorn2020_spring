@@ -1,6 +1,7 @@
 package com.gura.spring05.cafe.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -117,5 +118,13 @@ public class CafeController {
 	public String ajaxCommentList(HttpServletRequest request) {
 		cafeService.moreCommentList(request);
 		return "cafe/ajax_comment_list";
+	}
+	
+	//임시용 카페 글 목록보기 요청 처리
+	@RequestMapping("/cafe/ajax_list")
+	@ResponseBody
+	public List<CafeDto> ajaxList(HttpServletRequest request){
+		
+		return cafeService.getList2(request);
 	}
 }
