@@ -325,4 +325,62 @@ public class CafeServiceImpl implements CafeService{
 		request.setAttribute("commentList", commentList);
 		request.setAttribute("totalPageCount", totalPageCount);		
 	}
+
+	@Override
+	public List<CafeDto> getList2(HttpServletRequest request) {
+
+		//보여줄 페이지의 번호
+		int pageNum=1;
+		//보여줄 페이지의 번호가 파라미터로 전달되는지 읽어와 본다.	
+		String strPageNum=request.getParameter("pageNum");
+		if(strPageNum != null){//페이지 번호가 파라미터로 넘어온다면
+			//페이지 번호를 설정한다.
+			pageNum=Integer.parseInt(strPageNum);
+		}
+		//보여줄 페이지 데이터의 시작 ResultSet row 번호
+		int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+		//보여줄 페이지 데이터의 끝 ResultSet row 번호
+		int endRowNum=pageNum*PAGE_ROW_COUNT;
+		/*
+			검색 키워드에 관련된 처리
+		*/
+		String keyword = request.getParameter("keyword");
+		String condition = request.getParameter("condition");
+		if(keyword == null){//전달된 키워드가 없다면
+			//condition, keyword의 파라미터값이 null이 찍히지 않도록 하기 위함.(파라미터로 넘어오는 값이 null로 찍힐 경우 문제가 생길 수도 있다고 함.)
+			keyword = ""; //빈 문자열을 넣어준다.
+			condition = ""; //빈 문자열을 넣어준다.
+		}
+		
+		//keyword 변수의 내용을 파라미터로 전송할 때 인코딩된 키워드로 보내기 위함.
+		//인코딩안된 내용을 파라미터로 보내면 문제가 발생할 수도 있다.
+		//인코딩된 키워드를 미리 만들어 둔다.
+		String encodedK = URLEncoder.encode(keyword);
+		
+		//keyword와 condition 변수에 null값이 들어오는지 확인용.
+		//request.getParameter("keyword"), request.getParameter("keyword")의 값이 없는 경우 null값이 들어간다.
+		System.out.println(keyword);
+		System.out.println(condition);
+		
+		//검색 키워드와 startRowNum, endRowNum 을 담을 CafeDto 객체 생성
+		CafeDto dto = new CafeDto();
+		dto.setStartRowNum(startRowNum);
+		dto.setEndRowNum(endRowNum);
+		
+		if(!keyword.equals("")){ //만일 키워드가 넘어온다면
+			if(condition.equals("title_content")){
+				//검색 키워드를 CafeDto 객체의 필드에 담는다.
+				dto.setTitle(keyword);
+				dto.setContent(keyword);
+			}else if(condition.equals("title")){
+				dto.setTitle(keyword);
+			}else if(condition.equals("writer")){
+				dto.setWriter(keyword);
+			}
+		}
+		//카페 목록 얻어오기
+		List<CafeDto> list = cafeDao.getList(dto);
+		
+		return list;
+	}
 }
