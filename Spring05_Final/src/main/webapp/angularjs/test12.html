@@ -18,6 +18,14 @@
 		}).success(function(data){
 			$scope.list=data;
 		});
+		//ajax 로 카페 글 목록 페이징 처리를 위한 요청
+		$http({
+			url:"/spring05/cafe/ajax_paging_list.do",
+			method:"get",
+			params:{pageNum:$scope.pageNum}
+		}).success(function(data){
+			$scope.paging_list=data;
+		});
 		//다음 페이지 버튼을 눌렀을 때 호출되는 함수
 		$scope.next=function(){
 			$scope.pageNum++;
@@ -27,6 +35,7 @@
 				method:"get",
 				params:{pageNum:$scope.pageNum}
 			}).success(function(data){
+				console.log(data);
 				$scope.list=data;
 			});
 		}
@@ -57,6 +66,26 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="page-display">
+			<ul class="pagination pagination-sm" ng-repeat="tmp in list">
+			<c:if test="${startPageNum ne 1 }">
+				<li class="page-item"><a class="page-link" href="list.do?pageNum=${startPageNum-1 }&condition=${condition }&keyword=${encodedK }">Prev</a></li>
+			</c:if>
+			<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }">
+				<c:choose>
+					<c:when test="${i eq pageNum }">
+						<li class="page-item active"><a class="page-link" href="list.do?pageNum=${i }&condition=${condition }&keyword=${encodedK }">${i }</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link" href="list.do?pageNum=${i }&condition=${condition }&keyword=${encodedK }">${i }</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:if test="${endPageNum lt totalPageCount }">
+				<li class="page-item"><a class="page-link" href="list.do?pageNum=${endPageNum+1 }&condition=${condition }&keyword=${encodedK }">Next</a></li>
+			</c:if>
+			</ul>	
+		</div>		
 		<button ng-click="next()" class="btn btn-outline-primary">다음 페이지</button>
 	</div>
 </body>
