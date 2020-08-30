@@ -127,4 +127,12 @@ public class CafeController {
 		
 		return cafeService.getList2(request);
 	}
+	
+	//임시용 카페 글 목록보기 페이징 요청 처리
+	@RequestMapping("/cafe/ajax_paging_list.do")
+	@ResponseBody
+	public Map<String, Object> ajaxPagingList(HttpServletRequest request){
+		
+		return cafeService.getPagingList(request);
+	}
 }

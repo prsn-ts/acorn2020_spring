@@ -1,6 +1,7 @@
 package com.gura.spring05.cafe.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,4 +29,6 @@ public interface CafeService {
 	public void moreCommentList(HttpServletRequest request);//댓글 추가 응답
 	//카페 목록 보기 요청 관련 추상 메소드2
 	public List<CafeDto> getList2(HttpServletRequest request);
+	//카페 목록 페이징 처리 요청 관련 추상 메소드
+	public Map<String, Object> getPagingList(HttpServletRequest request);
 }
