@@ -7,9 +7,26 @@
 <script src="../resources/js/angular.min.js"></script>
 <script>
 	var cafeApp=angular.module("cafeApp", []);
+	
 	cafeApp.controller("cafeCtrl", function($scope, $http){
 		//페이지 로딩되는 시점에 실행되는 영역
-		$scope.pageNum=1;
+		
+		// url 에서 PageNum 추출
+		function getPageNum(pageNum) {
+		    var params = location.search.substr(location.search.indexOf("?") + 1);
+		    var sval = "";
+		    params = params.split("&");
+		    for (var i = 0; i < params.length; i++) {
+		        temp = params[i].split("=");
+		        if ([temp[0]] == pageNum) { sval = temp[1]; }
+		    }
+		    return sval;
+		}
+		//페이지 번호 가져오기
+		$scope.pageNum=getPageNum("pageNum");;
+		if($scope.pageNum == ""){
+			$scope.pageNum = 1;
+		}
 		//ajax 로 카페 글 목록을 요청
 		$http({
 			url:"/spring05/cafe/ajax_list.do",
@@ -17,6 +34,7 @@
 			params:{pageNum:$scope.pageNum}
 		}).success(function(data){
 			$scope.list=data;
+			console.log($scope);
 		});
 		//ajax 로 카페 글 목록 페이징 처리를 위한 요청
 		$http({
@@ -25,21 +43,44 @@
 			params:{pageNum:$scope.pageNum}
 		}).success(function(data){
 			$scope.paging_list=data;
+			var range = [];
+			for(var i=data.startPageNum;i<=data.endPageNum;i++) {
+			  range.push(i);
+			}
+			$scope.range = range;
 		});
 		//다음 페이지 버튼을 눌렀을 때 호출되는 함수
 		$scope.next=function(){
-			$scope.pageNum++;
 			//ajax 로 카페 글 목록을 요청
 			$http({
 				url:"/spring05/cafe/ajax_list.do",
 				method:"get",
 				params:{pageNum:$scope.pageNum}
 			}).success(function(data){
-				console.log(data);
+				console.log("/cafe/ajax_list.do:"+data);
+				console.log($scope);
 				$scope.list=data;
+				
+				$scope.pageNum=data[0].pageNum;
 			});
-		}
-		
+			//ajax 로 카페 글 목록 페이징 처리를 위한 요청
+			$http({
+				url:"/spring05/cafe/ajax_paging_list.do",
+				method:"get",
+				params:{pageNum:$scope.pageNum}
+			}).success(function(data){
+				console.log("/cafe/ajax_paging_list.do:"+data);
+				console.log($scope);
+				$scope.paging_list=data;
+				var range = [];
+				for(var i=data[0].startPageNum;i<=data[0].endPageNum;i++) {
+				  range.push(i);
+				}
+				$scope.range = range;
+				
+				$scope.pageNum=data[0].pageNum;
+			});
+		};
 	});
 </script>
 </head>
@@ -67,26 +108,23 @@
 			</tbody>
 		</table>
 		<div class="page-display">
-			<ul class="pagination pagination-sm" ng-repeat="tmp in list">
-			<c:if test="${startPageNum ne 1 }">
-				<li class="page-item"><a class="page-link" href="list.do?pageNum=${startPageNum-1 }&condition=${condition }&keyword=${encodedK }">Prev</a></li>
-			</c:if>
-			<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }">
-				<c:choose>
-					<c:when test="${i eq pageNum }">
-						<li class="page-item active"><a class="page-link" href="list.do?pageNum=${i }&condition=${condition }&keyword=${encodedK }">${i }</a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="page-item"><a class="page-link" href="list.do?pageNum=${i }&condition=${condition }&keyword=${encodedK }">${i }</a></li>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-			<c:if test="${endPageNum lt totalPageCount }">
-				<li class="page-item"><a class="page-link" href="list.do?pageNum=${endPageNum+1 }&condition=${condition }&keyword=${encodedK }">Next</a></li>
-			</c:if>
+			<ul class="pagination pagination-sm">
+				<div ng-if="paging_list.startPageNum != 1">
+					<li class="page-item"><a class="page-link" href="test12.html?pageNum={{paging_list.startPageNum-1}}" ng-click="next()">Prev</a></li>
+				</div>
+				<div ng-repeat="i in range" ng-model="i">
+					<div ng-if="i == paging_list.pageNum">
+						<li class="page-item active"><a class="page-link" href="test12.html?pageNum={{i}}" ng-click="next()">{{i}}</a></li>
+					</div>
+					<div ng-if="i != paging_list.pageNum" ng-model="i">
+						<li class="page-item"><a class="page-link" href="test12.html?pageNum={{i}}" ng-click="next()">{{i}}</a></li>
+					</div>
+				</div>
+				<div ng-if="paging_list.endPageNum < paging_list.totalPageCount">
+					<li class="page-item"><a class="page-link" href="test12.html?pageNum={{paging_list.endPageNum+1}}" ng-click="next()">Next</a></li>
+				</div>
 			</ul>	
-		</div>		
-		<button ng-click="next()" class="btn btn-outline-primary">다음 페이지</button>
+		</div>
 	</div>
 </body>
 </html>

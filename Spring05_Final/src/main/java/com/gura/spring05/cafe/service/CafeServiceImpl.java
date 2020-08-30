@@ -2,7 +2,9 @@ package com.gura.spring05.cafe.service;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -386,7 +388,7 @@ public class CafeServiceImpl implements CafeService{
 	}
 
 	@Override
-	public List<Integer> getPagingList(HttpServletRequest request) {
+	public Map<String, Object> getPagingList(HttpServletRequest request) {
 
 		//보여줄 페이지의 번호
 		int pageNum=1;
@@ -396,9 +398,15 @@ public class CafeServiceImpl implements CafeService{
 			//페이지 번호를 설정한다.
 			pageNum=Integer.parseInt(strPageNum);
 		}
+		//보여줄 페이지 데이터의 시작 ResultSet row 번호
+		int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+		//보여줄 페이지 데이터의 끝 ResultSet row 번호
+		int endRowNum=pageNum*PAGE_ROW_COUNT;
 		
 		//CafeDto 객체 생성
 		CafeDto dto = new CafeDto();
+		dto.setStartRowNum(startRowNum);
+		dto.setEndRowNum(endRowNum);
 		
 		//전체 row 의 개수를 담을 totalRow 변수.
 		int totalRow = cafeDao.getCount(dto);
@@ -415,19 +423,15 @@ public class CafeServiceImpl implements CafeService{
 		if(totalPageCount < endPageNum){
 			endPageNum=totalPageCount; //보정해준다.(실제 하단 페이지 개수로 화면에 출력될 수 있도록 endPageNum의 값을 totalPageCount로 넣어준다.)
 		}
-		//ArrayList<CafeDto> 객체 생성.
-		ArrayList<Integer> pagingList = new ArrayList<>();
+		//페이징 처리의 데이터를 담을 List<Map> 객체 생성.
+		Map<String, Object> pagingMap = new HashMap<>();
 		//페이징 처리에 필요한 데이터 담기
-		pagingList.add(totalRow);
-		pagingList.add(totalPageCount);
-		pagingList.add(startPageNum);
-		pagingList.add(endPageNum);
+		pagingMap.put("totalRow", totalRow);
+		pagingMap.put("totalPageCount", totalPageCount);
+		pagingMap.put("startPageNum", startPageNum);
+		pagingMap.put("endPageNum", endPageNum);
+		pagingMap.put("pageNum", pageNum);
 		
-		System.out.println("totalRow:"+pagingList.get(totalRow));
-		System.out.println("totalPageCount:"+pagingList.get(totalPageCount));
-		System.out.println("startPageNum:"+pagingList.get(startPageNum));
-		System.out.println("endPageNum:"+pagingList.get(endPageNum));
-		
-		return pagingList;
+		return pagingMap;
 	}
 }
