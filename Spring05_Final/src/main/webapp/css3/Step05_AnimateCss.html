@@ -1,0 +1,51 @@
+<!-- 
+	Keyframe 관련 애니메이션 참고 사이트
+	1. https://animate.style/ -> "animate.css" 라고 인터넷에 치면 나온다.
+	2. https://greensock.com/ -> "greensock" 이라고 인터넷에 치면 나온다.
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step05_AnimateCss.html</title>
+<!-- animate css 로딩하기 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+<style>
+	.container{
+		width: 768px;
+		margin: 300px auto 0;
+	}
+	h1{
+		text-align: center;
+	}
+	#one{
+		/* 이렇게 남이 만든 키프레임(keyframe)의 애니메이션을 커스터마이징 해서 구미에 맞게 바꿔쓸 수 있게 된다. */
+		animation-duration: 3s;
+		animation-iteration-count: infinite;
+	}
+</style>
+</head>
+<body>
+<div class="container">
+	<h1 class="animate__animated animate__backInDown">Animate Me!</h1>
+	<h1 id="one" class="animate__animated animate__backInDown">Animate Me!</h1>
+	<button id="myBtn" class="animate__animated">마우스 올려보슈~</button>
+	<button id="yourBtn" class="animate__animated">마우스 올려보슈~</button>
+</div>
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<script>
+	$("#myBtn").on("mouseover", function(){
+		$(this).addClass("animate__swing");
+	});
+	$("#yourBtn").on("mouseover", function(){
+		$(this).addClass("animate__swing")
+		//keyframe 애니메이션이 끝나면 "animationend" 이벤트가 발생하고 한번만(one) 함수안에 내용을 실행해주세요 라는 의미.
+		//안에 실행할 내용은 "animate__swing" 라는 이름의 클래스를 제거하므로 마우스를 올릴 때마다 계속 클래스가 추가됐다 없어졌다 하게된다.
+		.one("animationend", function(){
+			$(this).removeClass("animate__swing");
+		});
+	});
+</script>
+</body>
+</html>
