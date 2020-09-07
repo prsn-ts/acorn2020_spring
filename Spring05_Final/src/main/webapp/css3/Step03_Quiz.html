@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.wrapper{
+		text-align: center;
+	}
+	.wrapper-img{
+		transition: transform 0.4s ease-out;
+	}
+</style>
+</head>
+<body>
+<h1>transform 테스트</h1>
+<button id="leftBtn">좌</button>
+<button id="rightBtn">우</button>
+<button id="lotageBtn">회전</button><br />
+<div class="wrapper">
+	<img src="../resources/images/kim1.png" alt="" />
+</div>
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<script>
+	/*hint
+	var x = 50;
+	var angle = 45;
+	$(".wrapper img").css("transform", "translateX("+x+"px) rotate("+angle+"deg)");
+	*/
+	
+	/*
+		좌 버튼을 누르면 왼쪽으로 50px
+		우 버튼을 누르면 오른쪽으로 50px
+		회전 버튼을 누르면 45도씩 시계방향으로 회전 하게 해보세요.
+	*/
+	//x 축방향 평행 이동값
+	var x=0;
+	//회전 값
+	var angle=0;
+	
+	document.querySelector("#leftBtn").addEventListener("click", function(){
+		//변화되야하는 값을 x 변수로 관리하면서 클릭할 때마다 계산된 값을 저장.
+		x = x-50;
+		//계산된 x 변수의 값을 move 함수에 사용할 수 있도록 함수를 밑에 호출.
+		move();
+	});
+	$("#rightBtn").on("click", function(){
+		//변화되야하는 값을 x 변수로 관리하면서 클릭할 때마다 계산된 값을 저장.
+		x += 50;
+		//계산된 x 변수의 값을 move 함수에 사용할 수 있도록 함수를 밑에 호출.
+		move();
+	});
+	$("#lotageBtn").on("click", function(){
+		//변화되야하는 값을 x 변수로 관리하면서 클릭할 때마다 계산된 값을 저장.
+		angle += 45;
+		//계산된 x 변수의 값을 move 함수에 사용할 수 있도록 함수를 밑에 호출.
+		move();
+	});
+	
+	//반복 사용되는 부분의 코드를 함수를 만들어서 사용한다.(x축 이동 및 회전 할 수 있도록 css 효과 적용하는 함수)
+	function move(){
+		$(".wrapper img").css("transform", "translateX("+x+"px) rotate("+angle+"deg)");
+	}
+</script>
+</body>
+</html>
