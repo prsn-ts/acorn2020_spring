@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step01_BorderRadius.html</title>
+<style>
+	.box{
+		width: 100px;
+		height: 100px;
+		background-color: #999;
+		/* 
+			코너의 곡률 반경(코너의 접하는 원을 그릴 수 있는데 그 원의 반지름의 크기가 현재 20px이다.)
+			만약 완벽한 원을 그리고 싶다면 전체 크기(폭과 높이)의 100px의 절반인 50px로 지정하면 된다.
+		border-radius: 50px;
+		*/
+	}
+	#one{
+		/* 코너의 곡률 반경 */
+		border-radius: 20px;
+	}
+	#one{
+		/* 코너의 곡률 반경 */
+		border-radius: 50px;
+	}
+	#three{
+		/* 코너의 곡률 반경 */
+		border-radius: 50%;
+	}
+	#four{
+		border-radius: 10px 20px 30px 40px;
+	}
+	#five{
+		border-radius: 10px 20px;
+	}
+	#six{
+		border-radius: 20px;
+	}
+</style>
+</head>
+<body>
+<div class="box" id="one"></div>
+<div class="box" id="two"></div>
+<div class="box" id="three"></div>
+<div class="box" id="four"></div>
+<div class="box" id="five"></div>
+<img src="../resources/images/1.jpg" class="box" id="six" />
+</body>
+</html>
