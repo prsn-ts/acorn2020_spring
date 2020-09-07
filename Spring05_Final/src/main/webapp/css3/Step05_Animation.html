@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step05_Animation.html</title>
+<!-- 
+	css 효과가 처음 과 끝(두 군데의 상태)에만 변화하는 것이 적용되는 transition 속성과 달리
+	animation(Keyframe 속성)은 변화되는 시점(상태, state)를 얼마든지 여러개 정하고 그 정한 시점에 변화하는 css 효과를 줄 수 있다.
+-->
+<!-- 
+	Animate.css 라고 인터넷에 검색하면 "https://animate.style/" 이 사이트를 들어갈 수 있는데
+	미리 css 애니메이션 효과들이 정리된 것들이 있다 다운로드만 받아서 적절하게 쓰기만 하면 효과를 적용시킬 수 있따. 
+ -->
+<style>
+	.box{
+		width: 100px;
+		height: 100px;
+		background-color: #0f0;
+		border: 1px solid red;
+	}
+	
+	.box:hover{
+		animation-name: myAni;
+		animation-duration: 3s;
+		animation-timing-function: linear;
+		/* 애니메이션 반복 횟수 */
+		animation-iteration-count: 2;
+		/* 애니메이션 진행 방향 normal(기본, 0%~100%) | reverse(100%~0%) | alternate(0%~100%~0% 왔다갔다.) */
+		animation-direction: alternate;
+		
+	}
+	
+	/* 애니메이션 키프레임 정의 하기 */
+	/* @Keyframes 뒤에 나오는 이름(myAny)는 원하는 대로 지을 수 있다 마치 변수이름 짓듯이 */
+	@Keyframes myAni{
+		0%{
+			background-color: #0f0;
+			transform: rotate(0deg) scale(1.0);
+		}
+		50%{
+			background-color: #00C3D1;
+			transform: rotate(180deg) scale(0.5);
+		}
+		100%{
+			background-color: #ff0;
+			transform: rotate(360deg) scale(1.5);
+		}
+	}
+</style>
+</head>
+<body>
+<h1>animation 테스트</h1>
+<div class="box"></div>
+</body>
+</html>
