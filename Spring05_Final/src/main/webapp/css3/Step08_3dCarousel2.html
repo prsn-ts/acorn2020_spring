@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>css3/3dCarousel2.html</title>
+<!-- 
+	3d 공간을 css로 설정하고 실질적인 폭과 div의 개수에 따른 도형의 모양은
+	자바스크립트로 다루는 예제
+ -->
+<style>
+	.container{
+		width: 80%;
+		margin: 0 auto;
+	}
+
+	/* .wrapper dmf 3d 공간으로 만들기 */
+	.wrapper{
+		perspective: 1000px;
+		perspective-origin: 50% 50%;
+	}
+	.carousel {
+		transform-style: preserve-3d; /* 3d transform 을 하기 위함 */
+		position::relative;
+		height: 500px;
+	}
+	/* transition 효과를 동적으로 적용하기위해(버튼을 눌러 카루셀을 돌릴 때는 적용 O, 리사이즈를 하고 난 뒤에 원래 보던 카루셀을 볼 때는 transition 적용 X) */
+	.transition_effect{
+		transition: transform 0.4s ease-out;
+	}
+	.carousel div {
+		position: absolute;
+		height: 500px;
+		border: 1px solid red;
+	}
+</style>
+</head>
+<body>
+<div class="container">
+	<h1>회전하는 컨텐츠 입니다.</h1>
+	<div class="wrapper">
+		<div class="carousel">
+			<div>
+				<h3>one 컨텐츠</h3>
+				<img src="../resources/images/1.jpg" width="200" alt="" />
+				<p>첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠첫번째 컨텐츠</p>
+			</div>
+			<div>
+				<h3>two 컨텐츠</h3>
+				<img src="../resources/images/2.jpg" width="200" alt="" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum velit animi alias unde quis odio doloribus maiores deleniti quo dolor nulla hic architecto earum suscipit enim reprehenderit tempore perspiciatis. Necessitatibus!</p>
+			</div>
+			<div>
+				<h3>three 컨텐츠</h3>
+				<img src="../resources/images/3.jpg" width="200" alt="" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum velit animi alias unde quis odio doloribus maiores deleniti quo dolor nulla hic architecto earum suscipit enim reprehenderit tempore perspiciatis. Necessitatibus!</p>
+			</div>
+			<div>
+				<h3>four 컨텐츠</h3>
+				<img src="../resources/images/4.jpg" width="200" alt="" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum velit animi alias unde quis odio doloribus maiores deleniti quo dolor nulla hic architecto earum suscipit enim reprehenderit tempore perspiciatis. Necessitatibus!</p>
+			</div>
+			<div>
+				<h3>five 컨텐츠</h3>
+				<img src="../resources/images/5.jpg" width="200" alt="" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum velit animi alias unde quis odio doloribus maiores deleniti quo dolor nulla hic architecto earum suscipit enim reprehenderit tempore perspiciatis. Necessitatibus!</p>
+			</div>
+			<div>
+				<h3>six 컨텐츠</h3>
+				<img src="../resources/images/6.jpg" width="200" alt="" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum velit animi alias unde quis odio doloribus maiores deleniti quo dolor nulla hic architecto earum suscipit enim reprehenderit tempore perspiciatis. Necessitatibus!</p>
+			</div>
+		</div>
+	</div>
+	<div class="control">
+		<button id="prevBtn">&larr;</button>
+		<button id="nextBtn">&rarr;</button>
+	</div>
+	<p> phase : <a  id="phase"></a></p>
+	<p> direction : <a  id="direction"></a></p>
+	<p> distance : <a  id="distance"></a></p>
+</div>
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<!-- 
+	jquery를 의존하며 jquery의 추가 동작을 하는 jquery.touchSwipe.js 플러그인을 로딩한다.
+	※주의※ jquery를 의존하기 때문에 jquery-3.5.1.js 보다 밑에 위치하여야한다.
+ -->
+<script src="../resources/js/jquery.touchSwipe.js"></script>
+<script>
+	//z 축 평행이동값과 
+	var tz;
+	//회전값을 저장할 변수 선언
+	var angle;
+	// y축 회전값을 관리할 변수를 만들고 0으로 초기화
+	var rY = 0;
+
+	//페이지 로딩 시점에 한번 배치하기
+	initCarousel();
+	
+	//resize 이벤트가 일어 났을 때 다시 배치하기
+	//화면이 가로에서 세로 혹은 세로에서 가로로 보기 등등 화면의 사이즈가 바뀌면 리사이즈 이벤트가 발생한다.
+	//리사이즈가 발생하면 처음 로딩했던 화면에 맞게 설정된 이미지 크기로 배치되었던 것을 기준으로 삼기 때문에
+	//이미지 배치가 이상해지는데 이렇게 사이즈가 바뀌었을 때(리사이즈 이벤트가 발생했을 때) 다시 재배치할 수 있도록 설정한다.
+	$(window).on("resize", function(){
+		initCarousel();
+	});
+	
+	// .carousel 안에 있는 div를 3d 로 배치하는 함수
+	function initCarousel(){
+		//새로 배치 했을 때(리사이즈 이벤트 때문에 initCarousel() 함수가 실행됨)는 트랜지션 효과 안주기위해 트랜지션 효과 클래스를 제거한다.
+		$(".carousel").removeClass("transition_effect");
+		
+		// .carousel 안에 있는 div 의 개수 얻어내기
+		var n=$(".carousel div").length;
+		// .carousel 의 width 얻어내기
+		var width=$(".carousel").width();
+		// tz 와 angle 값을 가지고 있는 object 를 얻어낸다.
+		var obj = getAngleNtz(n, width);
+		// z 축으로 평행이동해야하는 값
+		tz = obj.tz;
+		//회전 각도
+		angle = obj.angle;
+		
+		// .carousel 을 일단 미리 뒤로 밀어 놓는다.
+		$(".carousel").css("transform", "translateZ(-"+tz+"px)");
+		
+		//div 의 회전값을 저장할 변수
+		var tmpY=0;
+		
+		//반복문 돌면서 div를 배치하기
+		for(var i=0; i<n; i++){
+			$(".carousel div").eq(i)
+			.css("transform","rotateY("+tmpY+"deg) translateZ("+tz+"px)");
+			//동적으로 바뀌는 회전 각도의 값을 더한다.
+			tmpY += angle;
+		}
+		//새로 배치 했을 때(리사이즈 이벤트 때문에 initCarousel() 함수가 실행됨) 원래 회전해있던 각도만큼 다시 회전 시켜놓기위해 rotage() 함수 실행.
+		rotate();
+	}
+	
+	$("#prevBtn").click(function(){
+		//이전 버튼을 눌렀을 때는 트랜지션 효과 적용.
+		$(".carousel").addClass("transition_effect");
+		rY += angle;
+		rotate();
+	});
+	$("#nextBtn").click(function(){
+		//다음 버튼을 눌렀을 때는 트랜지션 효과 적용.
+		$(".carousel").addClass("transition_effect");
+		rY -= angle;
+		rotate();
+	});
+	
+	function rotate(){
+		$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
+	}
+	
+	// n 각형과 한변의 길이가 width 일 때 몇도씩 돌면서 z 축 방향으로 얼마만큼 평행이동하면 되는지
+	// 에 대한 정보를 담고 있는 object 를 리턴하는 함수. 
+	// (특정의 n 각형인지와 특정 n각형(ex, 사각형 오각형)일 때의 한 변의 길이(width)와 함께 몇도씩 돌면서 z 축 방향으로 얼마만큼 평행이동하면 되는지 구해주는 함수)
+	function getAngleNtz(n, width) {
+	    var angle = Math.round(360 / n);
+	    var tz = Math.round((width / 2) / Math.tan((angle * Math.PI) / (2 * 180)));
+	    var obj = {
+	      angle: angle,
+	      tz: tz
+	    };
+	    return obj;
+	}
+	
+	var startValue = 0;
+	
+	// .carousel 에 일어나는 터치 이벤트(마우스 이벤트 겸용) 처리하기
+	$(".carousel").swipe({
+		swipeStatus:function(event, phase, direction, distance){
+			$("#phase").text(phase);
+			$("#direction").text(direction);
+			$("#distance").text(distance);
+			//hint
+			switch(phase){
+				case "start":
+					//터치 시작된 시점의 rY 를 변수에 저장한다.
+		            startValue = rY;
+					break;
+				case "move":
+					if(direction == "left"){
+						rY = startValue-distance/5;
+						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
+					}else if(direction == "right"){
+						rY = startValue+distance/5;
+						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
+					}
+					break;	
+				case "end":
+					if(direction == "left"){
+						rY = startValue-angle;
+						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
+					}else if(direction == "right"){
+						rY = startValue+angle;
+						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
+					}
+					//성공했을 때 rY의 값을 상태 저장.
+					startValue = rY;
+					break;	
+				case "cancel":
+					if(distance != 0){
+						rY = startValue;
+						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
+					}
+					break;	
+			}
+		}
+	});
+</script>
+</body>
+</html>
