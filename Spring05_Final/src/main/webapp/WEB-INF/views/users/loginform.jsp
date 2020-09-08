@@ -21,6 +21,9 @@
 		animation-timing-function: ease-out;
 		animation-iteration-count: 1;
 	}
+	#loginForm{
+		box-shadow: 6px 6px 35px 9px rgba(0,242,0,0.4);
+	}
 </style>
 <body>
 <div class="container animate__animated animate__backInDown filpInX">
