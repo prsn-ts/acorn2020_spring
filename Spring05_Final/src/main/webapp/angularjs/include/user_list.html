@@ -1,0 +1,18 @@
+<p>user_list 페이지 입니다.</p>
+<table>
+	<thead>
+		<tr>
+			<th>이름</th>
+			<th>이메일</th>
+			<th>등록일</th>
+		</tr>
+	</thead>
+	<tbody>
+		<!-- 여기에 userList는 userListCtrl라는 이름의 컨트롤러의 $scope.userList를 가리키게된다. -->
+		<tr ng-repeat="tmp in userList">
+			<td>{{tmp.name}}</td>
+			<td>{{tmp.email}}</td>
+			<td>{{tmp.regdate}}</td>
+		</tr>
+	</tbody>
+</table>
