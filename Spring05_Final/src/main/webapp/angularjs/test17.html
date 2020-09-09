@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>angularjs/test17.html</title>
+<script src="../resources/js/angular.min.js"></script>
+<script src="../resources/js/angular-route.min.js"></script>
+<script>
+	var myApp=angular.module("myApp", ["ngRoute"]);
+	
+	myApp.controller("userListCtrl", function($scope){
+		//샘플 데이터
+		$scope.userList=[{
+			name:"다이아울프",
+			email:"aaa@",
+			regdate:"2012"
+		},{
+			name:"눈표범",
+			email:"bbb@",
+			regdate:"2013"
+		},{
+			name:"금빛원숭이",
+			email:"ccc@",
+			regdate:"2014"
+		}];
+	});
+	//라우터를 사용하기 위한 설정(페이지를 전체 로딩이 아닌 부분 업데이트만 쉽게 할 수 있도록 도와주는 라우터 기능)
+	myApp.config(function($routeProvider){
+		$routeProvider
+		.when("/home", {templateUrl:"include/home.html"})
+		.when("/user_list", {templateUrl:"include/user_list.html", controller:"userListCtrl"}) //이 템플릿(userListCtrl) url에서 사용할 컨트롤러 등록하기
+		.otherwise({redirectTo:"/home"}) //위에 두개의 요청(/home, /user_list)가 아니라면 /home 으로 리다일렉트 이동을 하라는 뜻.
+	});
+</script>
+</head>
+<body>
+	<div class="container">
+		<h1>router 테스트 입니다.</h1>
+		<div class="nav">
+			<li><a href="#home">홈</a></li>
+			<li><a href="#user_list">회원목록</a></li>
+		</div>
+	</div>
+	<ng-view></ng-view>
+</body>
+</html>
