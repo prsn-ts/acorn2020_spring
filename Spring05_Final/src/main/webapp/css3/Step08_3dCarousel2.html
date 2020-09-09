@@ -31,6 +31,7 @@
 		position: absolute;
 		height: 500px;
 		border: 1px solid red;
+		backface-visibility: hidden; /* 뒷면이 보이지 않도록 */
 	}
 </style>
 </head>
@@ -167,7 +168,10 @@
 	    return obj;
 	}
 	
+	//현재 rY(y축 각도)의 값을 저장.
 	var startValue = 0;
+	//마우스가 카루셀 범위 밖에 나갔는지 여부
+	var isMoving=false;
 	
 	// .carousel 에 일어나는 터치 이벤트(마우스 이벤트 겸용) 처리하기
 	$(".carousel").swipe({
@@ -180,8 +184,11 @@
 				case "start":
 					//터치 시작된 시점의 rY 를 변수에 저장한다.
 		            startValue = rY;
+					//carousel 을 움직이고 있는 상태로 바꿔준다.
+					isMoving=true;
 					break;
 				case "move":
+					if(!isMoving)return;//움직이고 있는 상태가 아니라면 함수를 여기서 종료 
 					if(direction == "left"){
 						rY = startValue-distance/5;
 						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
@@ -189,8 +196,12 @@
 						rY = startValue+distance/5;
 						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
 					}
+					//carousel 을 움직이고 있는 상태로 바꿔준다.
+					isMoving=true;
 					break;	
 				case "end":
+					//carousel 을 움직이고 있지 않은 상태로 바꿔준다.
+					isMoving=false;
 					if(direction == "left"){
 						rY = startValue-angle;
 						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
@@ -202,12 +213,25 @@
 					startValue = rY;
 					break;	
 				case "cancel":
-					if(distance != 0){
-						rY = startValue;
-						$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
-					}
+					//carousel 을 움직이고 있지 않은 상태로 바꿔준다.
+					isMoving=false;
+					rY = startValue;
+					$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
 					break;	
 			}
+		},
+		allowPageScroll:"vertical", //세로로 작동하는 스와이프의 기능을 막는다.(좌우 스와이프만 관여하도록 설정.)
+		threshold: 100 // 역치를 100px (100px 이상 움직여야 end 로 판정이 난다.)
+	});
+	
+	// 드래그 도중에 마우스가 .carousel의 밖으로 나갔을 때
+	$(".carousel").on("mouseout", function(){
+		if(isMoving){//움직이고 있는 상태에서만
+			//아래의 작업을 해준다.
+			isMoving=false;
+			$(".carousel").addClass("transition_effect");
+			rY = startValue;
+			$(".carousel").css("transform", "translateZ(-"+tz+"px) rotateY("+rY+"deg)");
 		}
 	});
 </script>

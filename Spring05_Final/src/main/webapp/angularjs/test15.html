@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>/angularjs/test15.html</title>
+<!-- animate css 로딩하기 -->
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+<style>
+	/* angular-animate.min.js(ngAnimate) 이 파일로 인해 ng-enter, ng-leave 등이 순간적으로 동적으로 붙었다 뗐다하게된다. */
+	
+	/* in-animation 클래스를 가지고 있는 요소가 만들어질 때 적용할 애니메이션 */
+	.in-animation.ng-enter{ 
+		animation: bounceInDown 1s ease-out;
+	}
+	/* out-animation 클래스를 가지고 있는 요소가 제거될 때 적용할 애니메이션 */
+	.out-animation.ng-leave{
+		animation: bounceOutRight 1s linear;
+	}
+</style>
+<!-- angular 확장팩(모듈) 추가 -->
+<script src="../resources/js/angular.min.js"></script>
+<script src="../resources/js/angular-animate.min.js"></script>
+<script>
+	var myApp=angular.module("myApp", ["ngAnimate"]); //해당 모듈명의 첫글자는 대문자(ngAnimate)로 작성.
+	
+	myApp.controller("one", function($scope){
+		$scope.msgList=[];
+		$scope.addClicked=function(){
+			//이상하게도 배열에 같은 값이 들어가면 오류가 난다.
+			//(그래서 배열에 값이 들어갈 때 오브젝트로 감싸면 객체의 참조값이 들어가는데 이 참조값은 들어갈 때마다 다르므로 오류가 나지 않는다.)
+			$scope.msgList.push({msg:$scope.inputMsg});
+		};
+	});
+</script>
+</head>
+<body ng-controller="one">
+	<h1>ngAnimate 테스트</h1>
+	<input type="checkbox" ng-model="isMake"/><br/>
+	<img class="in-animation out-animation" src="../resources/images/kim1.png" 
+		ng-if="isMake" />
+	<h1>ul 에 메세지 추가 하기</h1>
+	<input type="text" ng-model="inputMsg" placeholder="메세지 입력..."/>
+	<button ng-click="addClicked()">추가</button>
+	<ul>
+		<li class="in-animation" ng-repeat="tmp in msgList">{{tmp.msg}}</li>
+	</ul>
+</body>
+</html>
