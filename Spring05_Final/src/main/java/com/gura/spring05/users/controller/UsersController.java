@@ -178,6 +178,19 @@ public class UsersController {
 		return mView;
 	}
 	
+	//로그인 했는지 확인 요청 처리
+	@RequestMapping("/users/ajax_login_check")
+	@ResponseBody
+	public Map<String, Object> ajaxLoginCheck(HttpSession session){
+		//세션에서 id 라는 키값으로 저장된 문자열을 읽어온다. 없으면 null
+		String id = (String)session.getAttribute("id");
+		//결과를 Map 에 담고
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		//리턴한다.
+		return map;
+	}
+	
 	//ajax로 로그인 하기 요청 처리
 	@RequestMapping(value="/users/ajax_login", method = RequestMethod.POST)
 	@ResponseBody
