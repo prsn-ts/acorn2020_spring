@@ -67,7 +67,7 @@
 	cafeApp.config(function($routeProvider){
 		//$routeProvider 객체를 이용해서 페이지 내에서의 이동 설정하기
 		//page, title 키들은 개발자가 임의로 생성한 오브젝트의 키 이름이므로 언제든지 원하는 이름으로 바꿀 수 있다.
-		//다만 templateUrl, controller의 이름은 기본으로 제공되는 오브젝트 키 이름이므로 이름을 바꾸면 제 기능을 하지 못한다.
+		//다만 templateUrl, controller의 이름은 앵귤러js에서 기본으로 제공되는 오브젝트 키 이름(예약어 같은 느낌)이므로 이름을 바꾸면 제 기능을 하지 못한다.
 		$routeProvider
 		.when("/home", {page: "home", title: "인덱스 페이지", templateUrl:"views/home.html"})
 		.when("/cafe_list", {page: "cafe_list", title: "목록보기 페이지", templateUrl:"views/cafe_list.html", controller:"cafeListCtrl"})
@@ -75,7 +75,7 @@
 		.otherwise({redirectTo:"/home"})
 	});
 	//초기화 되는 시점에 무언가 동작을 하고(준비) 싶을 때 .run() 을 호출해서 함수를 전달한다.
-	cafeApp.run(function($rootScope, $route){
+	cafeApp.run(function($http, $rootScope, $route){
 		/*
 			$rootScope 는 최상위 영역 객체
 			$route 페이지 라우트에 관련된 객체
@@ -90,17 +90,76 @@
 		//최상위 영역 객체에 모델 정의하기
 		$rootScope.myName="김구라";
 		$rootScope.count=0;
+		//로그인 여부를 요청해서 로그인된 아이디를 응답 받는다.
+		$http({
+			url:"/spring05/users/ajax_login_check.do",
+			method:"get"
+		}).success(function(data){
+			//data -> {id="gura" or null } 로그인한 아이디가 있으면 아이디 데이터 표출, 없으면 null 출력.
+			$rootScope.id = data.id;
+		});
+		$rootScope.onSubmit=function(){
+			$http({
+				url:"/spring05/users/ajax_login.do",
+				method:"POST",
+				params:{id:$rootScope.inputId, pwd:$rootScope.inputPwd},
+				headers:{"Content-Type":"application/x-www-form-urlencoded;charset=utf-8"}
+			}).success(function(data){
+				console.log(data);
+				if(data.isSuccess){
+					//로그인 성공인 경우
+					$rootScope.id=data.id;
+					$rootScope.isLoginFail=false; //로그인 실패 메세지를 띄우지 않도록 false로 변수값 설정.
+					$rootScope.isShowModal=false; //로그인 성공 후 모달창(로그인 폼)을 없앤다.
+				}else{
+					//로그인 실패인 경우
+					$rootScope.isLoginFail=true; //로그인 실패 메세지를 띄우도록 true로 변수값 설정.
+				}
+			});
+		};
 	});
 </script>
 </head>
 <body>
 <div class="container">
+	<p data-ng-show="id != null"> 
+		<strong>{{id}}</strong> 님 로그인중..
+		<button class="btn btn-warning btn-sm" data-ng-click="logout()">로그아웃</button>
+	</p>
+	<p data-ng-show="id == null"><button data-ng-click="isShowModal=true" class="btn btn-success btn-sm">로그인하기</button></p>
 	<h1>Router 테스트 예제 <strong>{{myName}}|{{count}}</strong></h1>
 	<ul class="nav nav-pills">
 		<li class="nav-item"><a data-ng-class="{active:currentPage=='home'}" class="nav-link" href="#home">Home</a></li>
 		<li class="nav-item"><a data-ng-class="{active:currentPage=='cafe_list'}" class="nav-link" href="#cafe_list">목록보기</a></li>
 	</ul>
 	<div data-ng-view class="page-change-animation"></div>
+</div>
+<div class="modal" tabindex="-1" data-ng-show="isShowModal" style="display:block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">로그인 폼</h5>
+        <button data-ng-click="isShowModal=false" type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form data-ng-submit="onSubmit()">
+        	<div class="form-group">
+        		<label for="id">아이디</label>
+        		<input data-ng-model="inputId" type="text" name="id" id="id" class="form-control"/>
+        	</div>
+        	<div class="form-group">
+        		<label for="pwd">비밀번호</label>
+        		<input data-ng-model="inputPwd" type="text" name="pwd" id="pwd" class="form-control"/>
+        	</div>
+	        <button data-ng-click="isShowModal=false" type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	        <button type="submit" class="btn btn-primary">로그인</button>
+        </form>
+        <p data-ng-show="isLoginFail" class="alert alert-danger">아이디 혹은 비밀번호가 틀려요!</p>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 </html>

@@ -35,4 +35,6 @@ public interface UsersService {
 	//비밀번호 수정 요청 관련 추상 메소드
 	public void updateUserPwd(HttpSession session, UsersDto dto,
 			ModelAndView mView);
+	//ajax 로그인 처리 요청 관련 수상 메소드
+	public Map<String, Object> ajaxLoginProcess(UsersDto dto, HttpSession session);
 }
