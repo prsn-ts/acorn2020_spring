@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gura.spring05.cafe.dao.CafeDao;
 import com.gura.spring05.cafe.dto.CafeCommentDto;
 import com.gura.spring05.cafe.dto.CafeDto;
 import com.gura.spring05.cafe.service.CafeService;
@@ -134,5 +135,16 @@ public class CafeController {
 	public Map<String, Object> ajaxPagingList(HttpServletRequest request){
 		
 		return cafeService.getPagingList(request);
+	}
+	// angular js 테스트용
+	@Autowired
+	private CafeDao cafeDao;
+	
+	//cafe_detail.html 페이지에서 사용될 ajax 요청 처리
+	@RequestMapping("/cafe/ajax_detail.do")
+	@ResponseBody
+	public CafeDto ajaxDetail(@RequestParam int num) {
+		
+		return cafeDao.getData(num);
 	}
 }
