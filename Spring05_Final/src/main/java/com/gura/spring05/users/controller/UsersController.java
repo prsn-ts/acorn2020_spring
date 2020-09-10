@@ -1,6 +1,7 @@
 package com.gura.spring05.users.controller;
 
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -176,4 +178,27 @@ public class UsersController {
 		return mView;
 	}
 	
+	//ajax로 로그인 하기 요청 처리
+	@RequestMapping(value="/users/ajax_login", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> ajaxLogin(UsersDto dto, HttpSession session){
+		//서비스가 리턴해주는 Map 객체를 리턴하면 json 문자열이 응답된다.
+		//로그인 성공인 경우 {"isSuccess":true, "id":"gura"}
+		//로그인 실패인 경우 {"isSuccess":false}
+		return service.ajaxLoginProcess(dto, session);
+	}
+	
+	//ajax로 로그아웃 요청 처리
+	@RequestMapping("/users/ajax_logout.do")
+	@ResponseBody
+	public Map<String, Object> ajaxLogout(HttpSession session){
+		//로그아웃 처리를 한다.
+		session.invalidate();
+		//map 객체를 만들고
+		Map<String, Object> map = new HashMap<String, Object>();
+		//로그아웃 성공 유무를 담고
+		map.put("isSuccess", true);
+		//리턴한다.
+		return map;
+	}
 }
