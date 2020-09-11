@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html data-ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>jsonp_loginform.html(angularjs 방식)</title>
+<!-- animate css 로딩하기 -->
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+<link rel="stylesheet" href="../resources/css/bootstrap.css" />
+<style>
+	.animate__fadeInDown.ng-enter{
+		animation: fadeInDown 1s ease-out;
+	}
+	.animate__fadeOutUp.ng-leave{
+		animation: fadeOutUp 1s ease-out;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.32/angular.min.js"></script>
+<script>
+	var myApp = angular.module("myApp", []);
+	myApp.controller("myCtrl", function($scope, $http){
+		$scope.formSubmit=function(){
+			var url = "http://localhost:8888/spring05/api/login_process.do?callback=JSON_CALLBACK";
+			$http
+			.jsonp(url, {params:{id:$scope.inputId, pwd:$scope.inputPwd}})
+			.success(function(data){
+				console.log(data);
+				$scope.result=data;
+				if($scope.result.id != null){ //로그인한 아이디가 있다면
+					$scope.isLogin=true;
+					$scope.isLogout=false;
+				}else{ //로그인한 아이디가 없다면
+					$scope.isLogin=false;
+					$scope.isLogout=true;
+				}
+			})
+			.error(function(data){
+				console.log(data);
+			});
+		};
+		$scope.logout=function(){
+			var url = "http://localhost:8888/spring05/api/logout.do?callback=JSON_CALLBACK";
+			$http
+			.jsonp(url)
+			.success(function(data){
+				$scope.logData=data;
+				if($scope.logData.isSuccess){ //로그아웃 했다면
+					//애니메이션 효과를 위해 상태를 변경한다.
+					$scope.isLogin=false;
+					$scope.isLogout=true;
+				}
+				console.log($scope);
+			})
+			.error(function(data){
+				console.log(data);
+			});
+		};
+	});
+</script>
+</head>
+<body data-ng-controller="myCtrl">
+	<div class="container">
+		<p class="animate__animated" data-ng-class="{animate__fadeInDown:isLogin, animate__fadeOutUp:isLogout}" data-ng-show="result.id != null"> 
+			<strong>{{result.id}}</strong> 님 로그인중..
+			<button class="logout btn btn-warning btn-sm" data-ng-click="logout()">로그아웃</button>
+		</p>
+		<div>
+			<h1 style="color:#00FFA1;">로그인 폼</h1>
+			<form data-ng-submit="formSubmit()">
+				<div class="form-group">
+					<label for="id">Id!</label>
+					<input class="form-control" type="text" name="id" id="id" data-ng-model="inputId" placeholder="아이디 입력" />
+				</div>
+				<div class="form-group">
+					<label for="pwd">Password!</label>
+					<input class="form-control" type="text" name="pwd" id="pwd" data-ng-model="inputPwd" placeholder="비밀번호 입력" />
+				</div>
+				<button type="submit" class="btn btn-outline-success">로그인</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
