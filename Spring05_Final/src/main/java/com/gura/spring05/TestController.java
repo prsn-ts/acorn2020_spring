@@ -21,6 +21,8 @@ import com.gura.spring05.users.service.UsersService;
 public class TestController {
 	
 	@Autowired
+	private UsersService usersService;
+	@Autowired
 	private UsersDao usersDao;
 	
 	@RequestMapping("/api/get_info")
@@ -35,7 +37,21 @@ public class TestController {
 		//JSONPObject 를 리턴해준다.
 		return jp;
 	}
+	//로그인 요청 처리(Teacher.ver)
+	@RequestMapping("/api/jsonp_login")
+	@ResponseBody
+	public JSONPObject jsonpLogin(String callback, UsersDto dto) {
+		//유효한 정보인지 여부를 얻어온다. 
+		boolean isValid=usersService.jsonpLogin(dto);
+		//유효한지 여부를 Map 에 담고
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("isValid", isValid);
+		//JSONPObject 객체에 담아서 
+		JSONPObject jp=new JSONPObject(callback, map);
+		return jp; //리턴해준다. 
+	}
 	
+	//로그인 요청 처리
 	@RequestMapping("/api/login_process")
 	@ResponseBody
 	public JSONPObject loginProcess(@RequestParam(defaultValue="callback") String callback,

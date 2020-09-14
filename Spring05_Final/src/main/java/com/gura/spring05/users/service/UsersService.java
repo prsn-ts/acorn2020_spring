@@ -37,4 +37,6 @@ public interface UsersService {
 			ModelAndView mView);
 	//ajax 로그인 처리 요청 관련 수상 메소드
 	public Map<String, Object> ajaxLoginProcess(UsersDto dto, HttpSession session);
+	//로그인 처리 요청 시 유효한 정보인지 확인하는 추상 메소드(Teacher.ver)
+	public boolean jsonpLogin(UsersDto dto);
 }
