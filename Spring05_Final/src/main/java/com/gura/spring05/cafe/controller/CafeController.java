@@ -147,4 +147,12 @@ public class CafeController {
 		
 		return cafeDao.getData(num);
 	}
+	
+	//임시용 카페 글 목록보기 요청 처리(Teacher)
+	@RequestMapping("/cafe/ajax_list_teacher.do")
+	@ResponseBody
+	public Map<String, Object> ajaxListTeacher(HttpServletRequest request){
+		
+		return cafeService.getList2_Teacher(request);
+	}
 }
