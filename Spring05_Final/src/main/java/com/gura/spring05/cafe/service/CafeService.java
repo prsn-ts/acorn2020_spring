@@ -27,8 +27,10 @@ public interface CafeService {
 	public void updateComment(CafeCommentDto dto); //댓글 수정
 	//추가 댓글 요청 처리 관련 추상 메소드
 	public void moreCommentList(HttpServletRequest request);//댓글 추가 응답
-	//카페 목록 보기 요청 관련 추상 메소드2
+	//test12.html/ 카페 목록 보기 요청 관련 추상 메소드2(My)
 	public List<CafeDto> getList2(HttpServletRequest request);
-	//카페 목록 페이징 처리 요청 관련 추상 메소드
+	//test12.html/ 카페 목록 페이징 처리 요청 관련 추상 메소드(My)
 	public Map<String, Object> getPagingList(HttpServletRequest request);
+	//test12.html/ 글 목록을 가져오기위한 처리하는 추상 메소드(Teacher, 글 목록과 페이징 처리를 한번에 수행)
+	public Map<String, Object> getList2_Teacher(HttpServletRequest request);
 }
