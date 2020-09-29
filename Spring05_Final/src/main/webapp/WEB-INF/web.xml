@@ -63,4 +63,43 @@
 		<location>/WEB-INF/views/error/500.jsp</location>
 	</error-page>
 	
+	<!-- 
+		Cross Origin 설정(이 서버에 요청하는 모든 요청에 대해서 요청해주도록 설정)
+		보통은 동일 출처 정책이라고 해서 프론트 엔드와 백엔드 개발을 한 서버로 하지만
+		만약 두 서버를 돌리면서 다른 서버에 데이터를 요청을 해야할 때 이 설정을 통해
+		모든 요청에 대해 받아줄 수 있도록 설정하는 작업이다. 
+	-->
+	<filter>
+		<filter-name>CorsFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+		<init-param>
+			<param-name>cors.allowed.origins</param-name>
+			<param-value>*</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.allowed.methods</param-name>
+			<param-value>GET,POST,HEAD,OPTIONS,PUT,DELETE</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.allowed.headers</param-name>
+			<param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.exposed.headers</param-name>
+			<param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cors.support.credentials</param-name>
+			<param-value>false</param-value>	
+		</init-param>
+		<init-param>
+			<param-name>cors.preflight.maxage</param-name>
+			<param-value>10</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CorsFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- //Cross Origin 설정 -->
 </web-app>
