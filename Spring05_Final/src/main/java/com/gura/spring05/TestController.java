@@ -29,8 +29,12 @@ public class TestController {
 	@RequestMapping("react/send")
 	@ResponseBody
 	public Map<String, Object> sendMessage(String msg){
+		// msg=xxx 파라미터 추출된 내용 콘솔창에 출력하기
 		System.out.println(msg);
-		return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("isSuccess", true);
+		map.put("msg", "ajax 전송 잘 받았어~ 클라이언트야");
+		return map;
 	}
 	
 	@RequestMapping("/api/get_info")
