@@ -25,6 +25,14 @@ public class TestController {
 	@Autowired
 	private UsersDao usersDao;
 	
+	//리액트 ajax 요청 테스트
+	@RequestMapping("react/send")
+	@ResponseBody
+	public Map<String, Object> sendMessage(String msg){
+		System.out.println(msg);
+		return null;
+	}
+	
 	@RequestMapping("/api/get_info")
 	@ResponseBody
 	public JSONPObject jsonp(@RequestParam(defaultValue="callback") String callback) {
